@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { themeChange } from 'theme-change';
 import './App.css';
 import Editor from './components/Editor';
 import Notes from './components/Notes';
@@ -23,7 +24,9 @@ function App() {
         'Reading list': (note) => note.folder === 'Reading list',
     };
 
-    console.log(filter);
+    useEffect(() => {
+        themeChange(false);
+    }, []);
 
     function findCurrentNote() {
         return notes.find((note) => note.id === currentNoteId);
@@ -93,7 +96,7 @@ function App() {
     return (
         <div className="flex h-screen w-full flex-row overflow-hidden">
             <div className="basis-[21.4285714%] bg-base-200">
-                <Sidebar setFilter={setFilter} FILTER_MAP={FILTER_MAP} />
+                <Sidebar setFilter={setFilter} filter={filter} />
             </div>
 
             <div className="flex basis-[21.4285714%] bg-base-100">

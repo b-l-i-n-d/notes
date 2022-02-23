@@ -7,7 +7,7 @@ function Notes({ notes, createNewNote, currentNote, setCurrentNoteId, filter, FI
     const noteElements = allNotes.filter(FILTER_MAP[filter]).map((note) => (
         <div
             key={note.id}
-            className={` space-y-2 rounded-lg p-3 shadow-md transition-all duration-300 ${
+            className={`space-y-2 rounded-lg p-3 shadow-md transition-all duration-300 ${
                 currentNote && note.id === currentNote.id
                     ? `bg-primary text-primary-content shadow-primary/50`
                     : ''
@@ -26,10 +26,11 @@ function Notes({ notes, createNewNote, currentNote, setCurrentNoteId, filter, FI
             <div className="pb-5 text-3xl font-bold">Notes</div>
             <button
                 type="button"
-                className="btn btn-ghost mb-5 w-full bg-base-200 hover:bg-base-300"
+                className="btn btn-ghost mb-5 w-full space-x-2 bg-base-200 hover:bg-base-300"
                 onClick={createNewNote()}
             >
-                Add Note
+                <i className="fa-solid fa-plus" />
+                <span>Add Note</span>
             </button>
             <div className="no-scrollbar h-full space-y-5 overflow-y-auto px-1 pb-28">
                 {noteElements}

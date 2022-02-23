@@ -1676,6 +1676,29 @@ html {
           text-decoration-line: underline;
 }
 
+.textarea {
+  flex-shrink: 1;
+  transition-property: color,background-color,border-color,fill,stroke,opacity,box-shadow,-webkit-text-decoration-color,-webkit-transform,-webkit-filter,-webkit-backdrop-filter;
+  transition-property: color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;
+  transition-property: color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-text-decoration-color,-webkit-transform,-webkit-filter,-webkit-backdrop-filter;
+  transition-duration: .2s;
+  transition-timing-function: cubic-bezier(.4,0,.2,1);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  font-size: .875rem;
+  line-height: 1.25rem;
+  line-height: 2;
+  min-height: 3rem;
+  border-width: 1px;
+  border-color: hsl(var(--bc) / var(--tw-border-opacity));
+  --tw-border-opacity: 0;
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--b1) / var(--tw-bg-opacity));
+  border-radius: var(--rounded-btn,.5rem);
+}
+
 .btn:active:focus,.btn:active:hover {
   -webkit-animation: none;
           animation: none;
@@ -1944,6 +1967,35 @@ html {
   }
 }
 
+.textarea:focus {
+  outline: 2px solid hsla(var(--bc) / .2);
+  outline-offset: 2px;
+}
+
+.textarea-disabled,.textarea[disabled] {
+  cursor: not-allowed;
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--b2,var(--b1)) / var(--tw-border-opacity));
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--b2,var(--b1)) / var(--tw-bg-opacity));
+  --tw-text-opacity: 0.2;
+}
+
+.textarea-disabled::-webkit-input-placeholder, .textarea[disabled]::-webkit-input-placeholder {
+  color: hsl(var(--bc) / var(--tw-placeholder-opacity));
+  --tw-placeholder-opacity: 0.2;
+}
+
+.textarea-disabled:-ms-input-placeholder, .textarea[disabled]:-ms-input-placeholder {
+  color: hsl(var(--bc) / var(--tw-placeholder-opacity));
+  --tw-placeholder-opacity: 0.2;
+}
+
+.textarea-disabled::placeholder,.textarea[disabled]::placeholder {
+  color: hsl(var(--bc) / var(--tw-placeholder-opacity));
+  --tw-placeholder-opacity: 0.2;
+}
+
 .divider-horizontal {
   flex-direction: column;
 }
@@ -2023,6 +2075,10 @@ html {
   height: 100vh;
 }
 
+.h-auto {
+  height: auto;
+}
+
 .h-full {
   height: 100%;
 }
@@ -2097,20 +2153,12 @@ html {
   margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
 }
 
-.overflow-auto {
-  overflow: auto;
-}
-
 .overflow-hidden {
   overflow: hidden;
 }
 
 .overflow-y-auto {
   overflow-y: auto;
-}
-
-.overflow-y-scroll {
-  overflow-y: scroll;
 }
 
 .rounded-lg {
@@ -2141,23 +2189,19 @@ html {
   padding: 0.75rem;
 }
 
-.p-32 {
-  padding: 8rem;
-}
-
 .px-10 {
   padding-left: 2.5rem;
   padding-right: 2.5rem;
 }
 
-.px-4 {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
 .py-5 {
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .px-1 {
@@ -2170,16 +2214,16 @@ html {
   padding-bottom: 0.75rem;
 }
 
-.pt-5 {
-  padding-top: 1.25rem;
-}
-
 .pb-5 {
   padding-bottom: 1.25rem;
 }
 
 .pb-28 {
   padding-bottom: 7rem;
+}
+
+.pt-5 {
+  padding-top: 1.25rem;
 }
 
 .pl-3 {
@@ -2194,30 +2238,14 @@ html {
   padding-right: 1rem;
 }
 
-.pb-32 {
-  padding-bottom: 8rem;
-}
-
-.pb-48 {
-  padding-bottom: 12rem;
-}
-
-.pb-80 {
-  padding-bottom: 20rem;
-}
-
-.pb-56 {
-  padding-bottom: 14rem;
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 
 .text-4xl {
   font-size: 2.25rem;
   line-height: 2.5rem;
-}
-
-.text-xl {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
 }
 
 .text-xs {
@@ -2235,16 +2263,21 @@ html {
   line-height: 2.25rem;
 }
 
-.font-bold {
-  font-weight: 700;
-}
-
-.font-medium {
-  font-weight: 500;
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
 }
 
 .font-semibold {
   font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-normal {
+  font-weight: 400;
 }
 
 .uppercase {
@@ -2276,6 +2309,26 @@ html {
   --tw-shadow: var(--tw-shadow-colored);
 }
 
+.outline-dashed {
+  outline-style: dashed;
+}
+
+.outline-dotted {
+  outline-style: dotted;
+}
+
+.outline-double {
+  outline-style: double;
+}
+
+.outline-violet-400 {
+  outline-color: #a78bfa;
+}
+
+.outline-violet-500 {
+  outline-color: #8b5cf6;
+}
+
 .transition-all {
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -2284,6 +2337,13 @@ html {
 
 .duration-300 {
   transition-duration: 300ms;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .line-clamp-3 {

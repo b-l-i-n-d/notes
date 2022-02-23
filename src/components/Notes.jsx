@@ -1,12 +1,10 @@
-import React from 'react';
 import parser from 'html-react-parser';
+import React from 'react';
 
 function Notes({ notes, createNewNote, currentNote, setCurrentNoteId }) {
     const allNotes = notes;
 
     const noteElements = allNotes.map((note) => (
-        // const noteHtml = new DOMParser().parseFromString(note.note, 'text/html');
-        // console.log(noteHtml);
         <div
             key={note.id}
             className={` space-y-2 rounded-lg p-3 shadow-md transition-all duration-300 ${
@@ -16,8 +14,8 @@ function Notes({ notes, createNewNote, currentNote, setCurrentNoteId }) {
             aria-hidden="true"
         >
             <div className="text-xs uppercase">{note.modify_date}</div>
-            <div className="text-lg font-semibold leading-tight">{note.title}</div>
-            <div className="line-clamp-3">{parser(note.note)}</div>
+            <div className="text-lg font-semibold leading-tight line-clamp-2">{note.title}</div>
+            <div className="line-clamp-3">{parser(note.body)}</div>
         </div>
     ));
 

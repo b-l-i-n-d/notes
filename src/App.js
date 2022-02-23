@@ -26,18 +26,48 @@ function App() {
             }),
             folder: '',
             title: 'Add your note',
-            note: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis beatae amet exercitationem vel eius quaerat fugiat nihil quae. Repellat, eaque.',
+            body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis beatae amet exercitationem vel eius quaerat fugiat nihil quae. Repellat, eaque.',
         };
         setNotes((prevNotes) => [newNote, ...prevNotes]);
         setCurrentNoteId(newNote.id);
     }
 
-    function updateNote(text) {
+    function updateTitle(event) {
         setNotes((oldNotes) => {
             const newArray = [];
             oldNotes.forEach((oldNote) => {
                 if (oldNote.id === currentNoteId) {
-                    newArray.unshift({ ...oldNote, note: text });
+                    newArray.unshift({
+                        ...oldNote,
+                        title: event.target.value.replace(/[\r\n]+/gm, ''),
+                        modify_date: new Date().toDateString(),
+                        modify_time: new Date().toLocaleTimeString(undefined, {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                        }),
+                    });
+                } else {
+                    newArray.push(oldNote);
+                }
+            });
+            return newArray;
+        });
+    }
+
+    function updateBody(body) {
+        setNotes((oldNotes) => {
+            const newArray = [];
+            oldNotes.forEach((oldNote) => {
+                if (oldNote.id === currentNoteId) {
+                    newArray.unshift({
+                        ...oldNote,
+                        body,
+                        modify_date: new Date().toDateString(),
+                        modify_time: new Date().toLocaleTimeString(undefined, {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                        }),
+                    });
                 } else {
                     newArray.push(oldNote);
                 }
@@ -68,7 +98,9 @@ function App() {
                     currentNoteId={currentNoteId}
                     currentNote={findCurrentNote()}
                     // eslint-disable-next-line react/jsx-no-bind
-                    updateNote={updateNote}
+                    updateBody={updateBody}
+                    // eslint-disable-next-line react/jsx-no-bind
+                    updateTitle={updateTitle}
                 />
             </div>
         </div>

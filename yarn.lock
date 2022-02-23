@@ -3552,10 +3552,10 @@ csstype@^3.0.2, csstype@^3.0.9:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.10.tgz#2ad3a7bed70f35b965707c092e5f30b327c290e5"
   integrity sha512-2u44ZG2OcNUO9HDp/Jl8C07x6pU/eTR3ncV91SiK3dhG9TWvRVsCoJw14Ckx5DgWkzGA3waZWO3d7pgqpUI/XA==
 
-daisyui@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-2.1.0.tgz#89f6318e67227bfe5d30664e548e23048b2d7cd3"
-  integrity sha512-DaIx6MdeVj6gzKXOwVAVm10JRsrGRM9RR8n5jcpCLHyhXnvOiBtL+bk/OIzOoRDDlnxdRWqdUaVwOzS90ABE0g==
+daisyui@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-2.2.0.tgz#5dc9cd7216dcd2047b9beec24aa08ba9bb380a01"
+  integrity sha512-Af9u7AcQnusbkFa37Asg1NCxLJzYilnZ1LeFSGulRBQkGyBUeum/KkuiwGws6XQ/ZtjZNCr30p7h0iGQ266TQg==
   dependencies:
     color "^4.2"
     tailwindcss "^3.0"
@@ -7640,7 +7640,7 @@ react-scripts@5.0.0:
   optionalDependencies:
     fsevents "^2.3.2"
 
-react-textarea-autosize@^8.3.2:
+react-textarea-autosize@^8.3.2, react-textarea-autosize@^8.3.3:
   version "8.3.3"
   resolved "https://registry.yarnpkg.com/react-textarea-autosize/-/react-textarea-autosize-8.3.3.tgz#f70913945369da453fd554c168f6baacd1fa04d8"
   integrity sha512-2XlHXK2TDxS6vbQaoPbMOfQ8GK7+irc2fVK6QFIcC8GOnH3zI/v481n+j1L0WaPVvKxwesnY93fEfH++sus2rQ==

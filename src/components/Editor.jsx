@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import noDataImg from '../assets/images/undraw_no_data_re_kwbl.svg';
 
-function Editor({ currentNoteId, currentNote, updateBody, updateTitle }) {
+function Editor({ currentNoteId, currentNote, updateBody, updateTitle, setFilter }) {
     const note = currentNote;
     const [isEditable, setIsEditable] = useState(false);
 
@@ -16,7 +16,11 @@ function Editor({ currentNoteId, currentNote, updateBody, updateTitle }) {
             <div className="breadcrumbs text-lg font-semibold">
                 <ul>
                     <li>
-                        <a href="##">
+                        <button
+                            type="button"
+                            className="inline-flex items-center font-semibold  hover:underline"
+                            onClick={() => setFilter(note.folder)}
+                        >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -31,7 +35,7 @@ function Editor({ currentNoteId, currentNote, updateBody, updateTitle }) {
                                 />
                             </svg>
                             {note.folder}
-                        </a>
+                        </button>
                     </li>
                     <li>
                         <svg

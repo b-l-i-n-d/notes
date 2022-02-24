@@ -20,7 +20,7 @@ function App() {
         'My Notes': (note) => note.folder === 'My Notes',
         'Todo list': (note) => note.folder === 'Todo list',
         Projects: (note) => note.folder === 'Projects',
-        Jurnals: (note) => note.folder === 'Jurnal',
+        Journal: (note) => note.folder === 'Journal',
         'Reading list': (note) => note.folder === 'Reading list',
     };
 
@@ -120,6 +120,7 @@ function App() {
                     updateBody={updateBody}
                     // eslint-disable-next-line react/jsx-no-bind
                     updateTitle={updateTitle}
+                    setFilter={setFilter}
                 />
             </div>
         </div>

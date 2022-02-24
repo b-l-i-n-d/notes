@@ -65,7 +65,7 @@ function Sidebar({ setFilter, filter }) {
                         filter={filter}
                     />
                     <FilterBtns
-                        name="Jurnals"
+                        name="Journal"
                         icon="fa-solid fa-book"
                         setFilter={setFilter}
                         filter={filter}
@@ -79,7 +79,7 @@ function Sidebar({ setFilter, filter }) {
                 </div>
             </div>
             <div className="dropdown-top dropdown w-full">
-                <label tabIndex="0" className="btn btn-ghost w-full space-x-2">
+                <label tabIndex="0" className="btn btn-ghost w-full space-x-2 shadow-md">
                     <i className="fa-solid fa-swatchbook" />
                     <span>Change Theme</span>
                     <i className="fa-solid fa-angle-up" />
@@ -91,10 +91,15 @@ function Sidebar({ setFilter, filter }) {
                     <li>
                         <button
                             type="button"
-                            data-set-theme="light"
+                            data-set-theme=""
                             data-act-class="active"
                             className="active"
                         >
+                            Default
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" data-set-theme="light" data-act-class="active">
                             🌝 light
                         </button>
                     </li>

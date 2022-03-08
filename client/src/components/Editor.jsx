@@ -13,7 +13,7 @@ function Editor({ currentNoteId, currentNote, updateBody, updateTitle, setFilter
 
     return currentNoteId ? (
         <div className="no-scrollbar overflow-y-auto py-5">
-            <div className="breadcrumbs text-lg font-semibold">
+            <div className="no-scrollbar breadcrumbs text-lg font-semibold">
                 <ul>
                     <li>
                         <button

@@ -38,6 +38,9 @@ module.exports = {
             'business',
             'acid',
             'lemonade',
+            'night',
+            'coffee',
+            'winter',
         ],
     },
 };

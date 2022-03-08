@@ -228,22 +228,22 @@ function Sidebar({ setFilter, filter }) {
                             🍋 Lemonade
                         </button>
                     </li>
+                    <li>
+                        <button type="button" data-set-theme="night" data-act-class="active">
+                            🌙 Night
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" data-set-theme="coffee" data-act-class="active">
+                            ☕️ Coffee
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" data-set-theme="winter" data-act-class="active">
+                            ❄️ Winter
+                        </button>
+                    </li>
                 </ul>
-                {/* <ul
-                    tabIndex="0"
-                    className="dropdown-content menu rounded-box w-52 bg-base-100 p-2 shadow"
-                >
-                    <li>
-                        <button data-set-theme="dark" data-act-class="ACTIVECLASS" type="button">
-                            Item 1
-                        </button>
-                    </li>
-                    <li>
-                        <button data-set-theme="light" data-act-class="ACTIVECLASS" type="button">
-                            Item 2
-                        </button>
-                    </li>
-                </ul> */}
             </div>
         </div>
     );

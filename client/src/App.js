@@ -95,11 +95,11 @@ function App() {
 
     return (
         <div className="flex h-screen w-full flex-row overflow-hidden">
-            <div className="basis-[21.4285714%] bg-base-200">
+            <div className="w-[21.4285714%] bg-base-200">
                 <Sidebar setFilter={setFilter} filter={filter} />
             </div>
 
-            <div className="flex basis-[21.4285714%] bg-base-100">
+            <div className="flex w-[21.4285714%] bg-base-100">
                 <Notes
                     notes={notes}
                     createNewNote={() => createNewNote}
@@ -112,7 +112,7 @@ function App() {
 
             <div className="divider divider-horizontal m-0 w-1" />
 
-            <div className="flex basis-[57.1428571%] bg-base-100 px-10">
+            <div className="flex w-[57.1428571%] bg-base-100 px-10">
                 <Editor
                     currentNoteId={currentNoteId}
                     currentNote={findCurrentNote()}

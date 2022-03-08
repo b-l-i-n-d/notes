@@ -2484,10 +2484,6 @@ html {
   margin-top: 6rem;
 }
 
-.inline-block {
-  display: inline-block;
-}
-
 .flex {
   display: flex;
 }

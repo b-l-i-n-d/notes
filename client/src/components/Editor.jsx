@@ -2,6 +2,7 @@ import RichTextEditor from '@mantine/rte';
 import React, { useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import noDataImg from '../assets/images/undraw_no_data_re_kwbl.svg';
+// import { useDispatch  } from "react-redux";
 
 function Editor({ currentNoteId, currentNote, updateBody, updateTitle, setFilter }) {
     const note = currentNote;

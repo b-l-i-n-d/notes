@@ -1,8 +1,28 @@
 import parse from 'html-react-parser';
+// import { nanoid } from 'nanoid';
 import React from 'react';
+// import { useDispatch } from 'react-redux';
+// import { useDispatch } from "react-redux";
 
 function Notes({ notes, createNewNote, currentNote, setCurrentNoteId, filter, FILTER_MAP }) {
     const allNotes = notes;
+    // const dispatch = useDispatch();
+
+    // const createNote = () => {
+    //     const newNote = {
+    //         id: nanoid(),
+    //         modify_date: new Date().toDateString(),
+    //         modify_time: new Date().toLocaleTimeString(undefined, {
+    //             hour: '2-digit',
+    //             minute: '2-digit',
+    //         }),
+    //         created_by: 'Anonymous',
+    //         folder: filter === 'All' ? 'My Notes' : filter,
+    //         title: 'Add your note',
+    //         body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis beatae amet exercitationem vel eius quaerat fugiat nihil quae. Repellat, eaque.',
+    //     };
+    //     dispatch(createNote(newNote));
+    // };
 
     const noteElements = allNotes.filter(FILTER_MAP[filter]).map((note) => (
         <div

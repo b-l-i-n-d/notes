@@ -1,6 +1,8 @@
 import { nanoid } from 'nanoid';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { themeChange } from 'theme-change';
+import { getNotes } from './actions/notes';
 import './App.css';
 import Editor from './components/Editor';
 import Notes from './components/Notes';
@@ -9,11 +11,15 @@ import notesData from './mock_data.json';
 import './tailwind.css';
 
 function App() {
+    // const allNotes = useSelector((state) => state.notes);
+    // console.log(allNotes);
     const [notes, setNotes] = useState(notesData);
 
     const [currentNoteId, setCurrentNoteId] = useState();
 
     const [filter, setFilter] = useState('All');
+
+    const dispatch = useDispatch();
 
     const FILTER_MAP = {
         All: () => true,
@@ -27,6 +33,10 @@ function App() {
     useEffect(() => {
         themeChange(false);
     }, []);
+
+    useEffect(() => {
+        dispatch(getNotes());
+    }, [dispatch]);
 
     function findCurrentNote() {
         return notes.find((note) => note.id === currentNoteId);

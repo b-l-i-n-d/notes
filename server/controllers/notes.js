@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Note from "../models/note.js";
 
 export const getNotes = async (req, res) => {
@@ -21,4 +22,22 @@ export const createNote = async (req, res) => {
     } catch (error) {
         res.status(409).json({ message: error.message });
     }
+};
+
+export const updateNote = async (req, res) => {
+    const { id: _id } = req.params;
+    const note = req.body;
+    console.log(_id, note);
+
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+        return res.status(404).send("No post it that ID.");
+    }
+
+    const updatedNote = await Note.findByIdAndUpdate(
+        _id,
+        { ...note, _id },
+        { new: true }
+    );
+
+    res.json(updatedNote);
 };

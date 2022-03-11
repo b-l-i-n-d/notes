@@ -11,8 +11,6 @@ import notesData from './mock_data.json';
 import './tailwind.css';
 
 function App() {
-    // const allNotes = useSelector((state) => state.notes);
-    // console.log(allNotes);
     const [notes, setNotes] = useState(notesData);
 
     const [currentNoteId, setCurrentNoteId] = useState();

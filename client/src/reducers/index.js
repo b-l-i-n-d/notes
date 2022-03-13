@@ -1,4 +1,5 @@
+/* eslint-disable import/prefer-default-export */
 import { combineReducers } from 'redux';
 import notes from './notes';
 
-export default combineReducers({ notes });
+export const reducers = combineReducers({ notes });

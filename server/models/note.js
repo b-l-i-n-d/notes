@@ -28,6 +28,10 @@ const noteSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    time_stamp: {
+        type: Date,
+        required: true,
+    }
 });
 
 const Note = mongoose.model("Note", noteSchema);

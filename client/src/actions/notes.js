@@ -7,7 +7,7 @@ export const getNotes = () => async (dispatch) => {
 
         dispatch({ type: 'FETCH_ALL', payload: data });
     } catch (error) {
-        console.log(error.message);
+        console.log(error);
     }
 };
 
@@ -17,7 +17,7 @@ export const createNote = (note) => async (dispatch) => {
 
         dispatch({ type: 'CREATE', payload: data });
     } catch (error) {
-        console.log(error.message);
+        console.log(error);
     }
 };
 
@@ -27,6 +27,6 @@ export const updateNote = (id, note) => async (dispatch) => {
 
         dispatch({ type: 'UPDATE', payload: data });
     } catch (error) {
-        console.log(error.message);
+        console.log(error);
     }
 };

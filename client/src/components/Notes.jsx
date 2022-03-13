@@ -1,28 +1,12 @@
 import parse from 'html-react-parser';
-// import { nanoid } from 'nanoid';
 import React from 'react';
-// import { useDispatch } from 'react-redux';
-// import { useDispatch } from "react-redux";
+import { useSelector } from 'react-redux';
 
-function Notes({ notes, createNewNote, currentNote, setCurrentNoteId, filter, FILTER_MAP }) {
-    const allNotes = notes;
-    // const dispatch = useDispatch();
-
-    // const createNote = () => {
-    //     const newNote = {
-    //         id: nanoid(),
-    //         modify_date: new Date().toDateString(),
-    //         modify_time: new Date().toLocaleTimeString(undefined, {
-    //             hour: '2-digit',
-    //             minute: '2-digit',
-    //         }),
-    //         created_by: 'Anonymous',
-    //         folder: filter === 'All' ? 'My Notes' : filter,
-    //         title: 'Add your note',
-    //         body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis beatae amet exercitationem vel eius quaerat fugiat nihil quae. Repellat, eaque.',
-    //     };
-    //     dispatch(createNote(newNote));
-    // };
+function Notes({ createNewNote, currentNoteId, setCurrentNoteId, filter, FILTER_MAP }) {
+    const allNotes = useSelector((state) => state.notes);
+    const currentNote = useSelector((state) =>
+        currentNoteId ? state.notes.find((n) => n.id === currentNoteId) : null
+    );
 
     const noteElements = allNotes.filter(FILTER_MAP[filter]).map((note) => (
         <div
@@ -47,7 +31,7 @@ function Notes({ notes, createNewNote, currentNote, setCurrentNoteId, filter, FI
             <button
                 type="button"
                 className="btn btn-ghost mb-5 w-full space-x-2 bg-base-200 hover:bg-base-300"
-                onClick={createNewNote()}
+                onClick={createNewNote}
             >
                 <i className="fa-solid fa-plus" />
                 <span>Add Note</span>

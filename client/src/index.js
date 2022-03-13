@@ -5,15 +5,17 @@ import { applyMiddleware, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import App from './App';
 import './index.css';
-import reducers from './reducers';
+import { reducers } from './reducers';
 import reportWebVitals from './reportWebVitals';
 
 const store = createStore(reducers, compose(applyMiddleware(thunk)));
 
 ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
+    <React.StrictMode>
+        <Provider store={store}>
+            <App />
+        </Provider>
+    </React.StrictMode>,
     document.getElementById('root')
 );
 

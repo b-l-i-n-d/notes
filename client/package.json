@@ -6,6 +6,7 @@
 	"dependencies": {
 		"@mantine/core": "^3.6.9",
 		"@mantine/hooks": "^3.6.9",
+		"@mantine/notifications": "^4.0.4",
 		"@mantine/rte": "^3.6.9",
 		"@tailwindcss/line-clamp": "^0.3.1",
 		"@testing-library/jest-dom": "^5.14.1",

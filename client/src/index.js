@@ -1,3 +1,4 @@
+import { NotificationsProvider } from '@mantine/notifications';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -13,7 +14,9 @@ const store = createStore(reducers, compose(applyMiddleware(thunk)));
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
-            <App />
+            <NotificationsProvider>
+                <App />
+            </NotificationsProvider>
         </Provider>
     </React.StrictMode>,
     document.getElementById('root')

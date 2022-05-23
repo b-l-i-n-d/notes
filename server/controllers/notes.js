@@ -39,8 +39,8 @@ export const updateNote = async (req, res) => {
     const updatedNote = await Note.findByIdAndUpdate(
         _id,
         { ...note, _id },
-        { new: true }
+        { new: true },
     );
-
-    res.json(updatedNote);
+    
+    res.status(200).json(updatedNote);
 };

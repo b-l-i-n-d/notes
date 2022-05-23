@@ -85,7 +85,7 @@ function Sidebar({ setFilter, filter }) {
                     <i className="fa-solid fa-angle-up" />
                 </label>
                 <ul
-                    className="dropdown-content menu menu-compact h-96 w-full overflow-y-scroll rounded bg-base-100 p-4"
+                    className="no-scrollbar dropdown-content menu menu-compact h-96 w-full overflow-y-scroll rounded bg-base-100 p-4"
                     tabIndex="0"
                 >
                     <li>

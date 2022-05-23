@@ -1,3 +1,4 @@
+import { useNotifications } from '@mantine/notifications';
 import { nanoid } from 'nanoid';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -25,6 +26,8 @@ function App() {
         'Reading list': (note) => note.folder === 'Reading list',
     };
 
+    const notifications = useNotifications();
+
     useEffect(() => {
         themeChange(false);
     }, []);
@@ -48,51 +51,24 @@ function App() {
         };
         setCurrentNoteId(newNote.id);
         dispatch(createNote(newNote));
+        const id = notifications.showNotification({
+            loading: true,
+            title: 'Creating note',
+            message: 'My brain is fast, you know. ⚡',
+            autoClose: false,
+            disallowClose: true,
+        });
+        setTimeout(() => {
+            notifications.updateNotification(id, {
+                id,
+                color: 'green',
+                title: 'Note created.',
+                message: `It's time to edit. ✒️`,
+                icon: <i className="fa-solid fa-check" />,
+                autoClose: 2000,
+            });
+        }, 1000);
     };
-
-    // function updateTitle(event) {
-    //     setNotes((oldNotes) => {
-    //         const newArray = [];
-    //         oldNotes.forEach((oldNote) => {
-    //             if (oldNote.id === currentNoteId) {
-    //                 newArray.unshift({
-    //                     ...oldNote,
-    //                     title: event.target.value.replace(/[\r\n]+/gm, ''),
-    //                     modify_date: new Date().toDateString(),
-    //                     modify_time: new Date().toLocaleTimeString(undefined, {
-    //                         hour: '2-digit',
-    //                         minute: '2-digit',
-    //                     }),
-    //                 });
-    //             } else {
-    //                 newArray.push(oldNote);
-    //             }
-    //         });
-    //         return newArray;
-    //     });
-    // }
-
-    // function updateBody(body) {
-    //     setNotes((oldNotes) => {
-    //         const newArray = [];
-    //         oldNotes.forEach((oldNote) => {
-    //             if (oldNote.id === currentNoteId) {
-    //                 newArray.unshift({
-    //                     ...oldNote,
-    //                     body,
-    //                     modify_date: new Date().toDateString(),
-    //                     modify_time: new Date().toLocaleTimeString(undefined, {
-    //                         hour: '2-digit',
-    //                         minute: '2-digit',
-    //                     }),
-    //                 });
-    //             } else {
-    //                 newArray.push(oldNote);
-    //             }
-    //         });
-    //         return newArray;
-    //     });
-    // }
 
     return (
         <div className="flex h-screen w-full flex-row overflow-hidden">
@@ -113,14 +89,7 @@ function App() {
             <div className="divider divider-horizontal m-0 w-1" />
 
             <div className="flex w-[57.1428571%] bg-base-100 px-10">
-                <Editor
-                    currentNoteId={currentNoteId}
-                    // eslint-disable-next-line react/jsx-no-bind
-                    // updateBody={updateBody}
-                    // eslint-disable-next-line react/jsx-no-bind
-                    // updateTitle={updateTitle}
-                    setFilter={setFilter}
-                />
+                <Editor currentNoteId={currentNoteId} setFilter={setFilter} />
             </div>
         </div>
     );

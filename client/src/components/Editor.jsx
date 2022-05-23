@@ -1,21 +1,14 @@
-import RichTextEditor from '@mantine/rte';
+import { ScrollArea } from '@mantine/core';
+import { useNotifications } from '@mantine/notifications';
+import { RichTextEditor } from '@mantine/rte';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
-import { getNotes } from '../actions/notes';
-import { updateNote } from '../api';
+import { getNotes, updateNote } from '../actions/notes';
 import noDataImg from '../assets/images/undraw_no_data_re_kwbl.svg';
-// import { useDispatch  } from "react-redux";
 
 function Editor({ currentNoteId, setFilter }) {
-    const [noteData, setNoteData] = useState({
-        folder: '',
-        title: '',
-        created_by: '',
-        modify_date: '',
-        modify_time: '',
-        body: '',
-    });
+    const [noteData, setNoteData] = useState('');
 
     const [isSaved, setIsSaved] = useState(true);
 
@@ -24,6 +17,8 @@ function Editor({ currentNoteId, setFilter }) {
     );
 
     const [isEditable, setIsEditable] = useState(false);
+
+    const notifications = useNotifications();
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -33,14 +28,18 @@ function Editor({ currentNoteId, setFilter }) {
     }, [note]);
 
     useEffect(() => {
-        dispatch(getNotes());
+        if (isSaved === true) {
+            dispatch(getNotes());
+        }
     }, [isSaved, dispatch]);
 
-    const handleEditable = () => {
+    const toggleEditable = () => {
         setIsEditable((prevIsEditable) => !prevIsEditable);
     };
 
     const updateNoteDataTitle = (event) => {
+        setIsSaved(false);
+
         setNoteData((prevNoteData) => ({
             ...prevNoteData,
             title: event.target.value.replace(/[\r\n]+/gm, ''),
@@ -50,10 +49,11 @@ function Editor({ currentNoteId, setFilter }) {
                 minute: '2-digit',
             }),
         }));
-        setIsSaved(false);
     };
 
     const updateNoteDataBody = (body) => {
+        setIsSaved(false);
+
         setNoteData((prevNoteData) => ({
             ...prevNoteData,
             body,
@@ -63,46 +63,28 @@ function Editor({ currentNoteId, setFilter }) {
                 minute: '2-digit',
             }),
         }));
-        setIsSaved(false);
     };
-
-    // const updateTitle = (event) => {
-    //     if (currentNoteId) {
-    //         dispatch(
-    //             // eslint-disable-next-line no-underscore-dangle
-    //             updateNote(note._id, {
-    //                 ...note,
-    //                 title: event.target.value.replace(/[\r\n]+/gm, ''),
-    //                 modify_date: new Date().toDateString(),
-    //                 modify_time: new Date().toLocaleTimeString(undefined, {
-    //                     hour: '2-digit',
-    //                     minute: '2-digit',
-    //                 }),
-    //             })
-    //         );
-    //     }
-    // };
-
-    // const updateBody = (body) => {
-    //     if (currentNoteId) {
-    //         dispatch(
-    //             // eslint-disable-next-line no-underscore-dangle
-    //             updateNote(note._id, {
-    //                 ...note,
-    //                 body,
-    //                 modify_date: new Date().toDateString(),
-    //                 modify_time: new Date().toLocaleTimeString(undefined, {
-    //                     hour: '2-digit',
-    //                     minute: '2-digit',
-    //                 }),
-    //             })
-    //         );
-    //     }
-    // };
 
     const handleSave = () => {
         if (currentNoteId) {
             setIsSaved(true);
+            const id = notifications.showNotification({
+                loading: true,
+                title: 'Saving note.',
+                message: 'My brain is fast, you know. ⚡',
+                autoClose: false,
+                disallowClose: true,
+            });
+            setTimeout(() => {
+                notifications.updateNotification(id, {
+                    id,
+                    color: 'green',
+                    title: 'Note saved.',
+                    message: 'Your data is saved in my brain. 🧠',
+                    icon: <i className="fa-solid fa-check" />,
+                    autoClose: 2000,
+                });
+            }, 1000);
             dispatch(
                 // eslint-disable-next-line no-underscore-dangle
                 updateNote(note._id, {
@@ -162,51 +144,60 @@ function Editor({ currentNoteId, setFilter }) {
                         Save
                     </button>
                 )}
+                <button type="button" className="btn btn-error ml-4">
+                    Delete
+                </button>
             </div>
 
             <div className="divider divider-vertical" />
-            <div className="space-y-5">
-                {isEditable ? (
-                    <TextareaAutosize
-                        autoFocus
-                        className="h-auto w-full bg-base-100 text-4xl font-bold outline-dashed outline-primary"
-                        type="text"
-                        value={noteData.title}
-                        onChange={updateNoteDataTitle}
-                        onBlur={handleEditable}
-                    />
-                ) : (
-                    <div aria-hidden="true" className="text-4xl font-bold" onClick={handleEditable}>
-                        {noteData.title}
-                    </div>
-                )}
-
-                <div className="flex">
-                    <div className="w-1/4 opacity-75">Created By:</div>
-                    <div className="w-3/4 font-normal">
-                        <div className="placeholder avatar mr-2">
-                            <div className="w-8 rounded-full bg-neutral-focus text-neutral-content">
-                                <span className="text-xs">A</span>
-                            </div>
+            <ScrollArea className="h-full">
+                <div className="space-y-5">
+                    {isEditable ? (
+                        <TextareaAutosize
+                            autoFocus
+                            className="h-auto w-full bg-base-100 text-4xl font-bold outline-dashed outline-primary"
+                            type="text"
+                            value={noteData.title}
+                            onChange={updateNoteDataTitle}
+                            onBlur={toggleEditable}
+                        />
+                    ) : (
+                        <div
+                            aria-hidden="true"
+                            className="text-4xl font-bold"
+                            onClick={toggleEditable}
+                        >
+                            {noteData.title}
                         </div>
-                        {`${noteData.created_by}`}
+                    )}
+
+                    <div className="flex">
+                        <div className="w-1/4 opacity-75">Created By:</div>
+                        <div className="w-3/4 font-normal">
+                            <div className="placeholder avatar mr-2">
+                                <div className="w-8 rounded-full bg-neutral-focus text-neutral-content">
+                                    <span className="text-xs">A</span>
+                                </div>
+                            </div>
+                            {`${noteData.created_by}`}
+                        </div>
+                    </div>
+                    <div className="flex">
+                        <div className="w-1/4 opacity-75">Last Modified:</div>
+                        <div className="w-3/4 font-normal">
+                            {`${noteData.modify_date}, ${noteData.modify_time}`}
+                        </div>
                     </div>
                 </div>
-                <div className="flex">
-                    <div className="w-1/4 opacity-75">Last Modified:</div>
-                    <div className="w-3/4 font-normal">
-                        {`${noteData.modify_date}, ${noteData.modify_time}`}
-                    </div>
+                <div className="divider divider-vertical" />
+                <div>
+                    <RichTextEditor
+                        className="bg-base-100 text-base-content"
+                        value={noteData.body}
+                        onChange={updateNoteDataBody}
+                    />
                 </div>
-            </div>
-            <div className="divider divider-vertical" />
-            <div>
-                <RichTextEditor
-                    className="bg-base-100 text-base text-base-content"
-                    value={noteData.body}
-                    onChange={updateNoteDataBody}
-                />
-            </div>
+            </ScrollArea>
         </div>
     ) : (
         <div className="flex h-full flex-col items-center justify-center space-y-3">

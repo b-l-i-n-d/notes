@@ -3,9 +3,31 @@ import { useNotifications } from '@mantine/notifications';
 import { RichTextEditor } from '@mantine/rte';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { WithContext as ReactTags } from 'react-tag-input';
 import TextareaAutosize from 'react-textarea-autosize';
 import { deleteNote, getNotes, updateNote } from '../actions/notes';
 import noDataImg from '../assets/images/undraw_no_data_re_kwbl.svg';
+
+function NoteTags() {
+    const [tags, setTags] = useState([]);
+
+    const handleAddition = (tag) => {
+        setTags([...tags, tag]);
+    };
+
+    const handleDelete = (i) => {
+        setTags(tags.filter((tag, index) => index !== i));
+    };
+
+    return (
+        <ReactTags
+            classNames="input"
+            tags={tags}
+            handleAddition={handleAddition}
+            handleDelete={handleDelete}
+        />
+    );
+}
 
 function Editor({ currentNoteId, setCurrentNoteId, setFilter }) {
     const [noteData, setNoteData] = useState('');
@@ -189,6 +211,14 @@ function Editor({ currentNoteId, setCurrentNoteId, setFilter }) {
                             {`${noteData.created_by}`}
                         </div>
                     </div>
+
+                    <div className="flex">
+                        <div className="w-1/4 opacity-75">Tags:</div>
+                        <div className="w-3/4 font-normal">
+                            <NoteTags />
+                        </div>
+                    </div>
+
                     <div className="flex">
                         <div className="w-1/4 opacity-75">Last Modified:</div>
                         <div className="w-3/4 font-normal">

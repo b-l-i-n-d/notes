@@ -30,7 +30,6 @@ export const createNote = async (req, res) => {
 export const updateNote = async (req, res) => {
     const { id: _id } = req.params;
     const note = { ...req.body, time_stamp: new Date() };
-    console.log(_id, note);
 
     if (!mongoose.Types.ObjectId.isValid(_id)) {
         return res.status(404).send("No post it that ID.");
@@ -44,3 +43,15 @@ export const updateNote = async (req, res) => {
     
     res.status(200).json(updatedNote);
 };
+
+export const deleteNote = async (req, res) => {
+    const {id: _id} = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+        return res.status(404).send("No post it that ID.");
+    } 
+
+    await Note.findByIdAndDelete(_id);
+
+    res.json({message: 'Notes Deleted'});
+}

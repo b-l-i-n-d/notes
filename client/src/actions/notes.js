@@ -30,3 +30,13 @@ export const updateNote = (id, note) => async (dispatch) => {
         console.log(error);
     }
 };
+
+export const deleteNote = (id) => async (dispatch) => {
+    try {
+        api.deleteNote(id);
+
+        dispatch({ type: 'DELETE', payload: id });
+    } catch (error) {
+        console.log(error);
+    }
+};

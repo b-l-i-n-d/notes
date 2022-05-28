@@ -34,7 +34,7 @@ function App() {
 
     useEffect(() => {
         dispatch(getNotes());
-    }, [dispatch]);
+    }, [currentNoteId, dispatch]);
 
     const createNewNote = () => {
         const newNote = {
@@ -89,7 +89,11 @@ function App() {
             <div className="divider divider-horizontal m-0 w-1" />
 
             <div className="flex w-[57.1428571%] bg-base-100 px-10">
-                <Editor currentNoteId={currentNoteId} setFilter={setFilter} />
+                <Editor
+                    currentNoteId={currentNoteId}
+                    setCurrentNoteId={setCurrentNoteId}
+                    setFilter={setFilter}
+                />
             </div>
         </div>
     );

@@ -4,10 +4,10 @@ import { RichTextEditor } from '@mantine/rte';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
-import { getNotes, updateNote } from '../actions/notes';
+import { deleteNote, getNotes, updateNote } from '../actions/notes';
 import noDataImg from '../assets/images/undraw_no_data_re_kwbl.svg';
 
-function Editor({ currentNoteId, setFilter }) {
+function Editor({ currentNoteId, setCurrentNoteId, setFilter }) {
     const [noteData, setNoteData] = useState('');
 
     const [isSaved, setIsSaved] = useState(true);
@@ -94,6 +94,13 @@ function Editor({ currentNoteId, setFilter }) {
         }
     };
 
+    const handleDelete = () => {
+        // eslint-disable-next-line no-underscore-dangle
+        dispatch(deleteNote(note._id));
+        setIsSaved(true);
+        setCurrentNoteId(null);
+    };
+
     return note ? (
         <div className="no-scrollbar w-full overflow-y-auto py-5">
             <div className="flex items-center">
@@ -144,7 +151,7 @@ function Editor({ currentNoteId, setFilter }) {
                         Save
                     </button>
                 )}
-                <button type="button" className="btn btn-error ml-4">
+                <button type="button" className="btn btn-error ml-4" onClick={handleDelete}>
                     Delete
                 </button>
             </div>

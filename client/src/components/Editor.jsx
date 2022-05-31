@@ -3,40 +3,22 @@ import { useNotifications } from '@mantine/notifications';
 import { RichTextEditor } from '@mantine/rte';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { WithContext as ReactTags } from 'react-tag-input';
 import TextareaAutosize from 'react-textarea-autosize';
-import { deleteNote, getNotes, updateNote } from '../actions/notes';
+import { getNotes, updateNote } from '../actions/notes';
+import { needSaving, resetIsSaved } from '../actions/savedStatus';
 import noDataImg from '../assets/images/undraw_no_data_re_kwbl.svg';
+import NoteTags from './NoteTags/NoteTags';
 
-function NoteTags() {
-    const [tags, setTags] = useState([]);
+function Editor({ setFilter, handleDelete }) {
+    const currentNoteId = useSelector((state) => state.currentNoteId);
 
-    const handleAddition = (tag) => {
-        setTags([...tags, tag]);
-    };
-
-    const handleDelete = (i) => {
-        setTags(tags.filter((tag, index) => index !== i));
-    };
-
-    return (
-        <ReactTags
-            classNames="input"
-            tags={tags}
-            handleAddition={handleAddition}
-            handleDelete={handleDelete}
-        />
-    );
-}
-
-function Editor({ currentNoteId, setCurrentNoteId, setFilter }) {
     const [noteData, setNoteData] = useState('');
-
-    const [isSaved, setIsSaved] = useState(true);
 
     const note = useSelector((state) =>
         currentNoteId ? state.notes.find((n) => n.id === currentNoteId) : null
     );
+
+    const isSaved = useSelector((state) => state.savedStatus);
 
     const [isEditable, setIsEditable] = useState(false);
 
@@ -60,7 +42,7 @@ function Editor({ currentNoteId, setCurrentNoteId, setFilter }) {
     };
 
     const updateNoteDataTitle = (event) => {
-        setIsSaved(false);
+        dispatch(needSaving());
 
         setNoteData((prevNoteData) => ({
             ...prevNoteData,
@@ -74,7 +56,7 @@ function Editor({ currentNoteId, setCurrentNoteId, setFilter }) {
     };
 
     const updateNoteDataBody = (body) => {
-        setIsSaved(false);
+        dispatch(needSaving());
 
         setNoteData((prevNoteData) => ({
             ...prevNoteData,
@@ -89,7 +71,7 @@ function Editor({ currentNoteId, setCurrentNoteId, setFilter }) {
 
     const handleSave = () => {
         if (currentNoteId) {
-            setIsSaved(true);
+            dispatch(resetIsSaved());
             const id = notifications.showNotification({
                 loading: true,
                 title: 'Saving note.',
@@ -116,12 +98,12 @@ function Editor({ currentNoteId, setCurrentNoteId, setFilter }) {
         }
     };
 
-    const handleDelete = () => {
-        // eslint-disable-next-line no-underscore-dangle
-        dispatch(deleteNote(note._id));
-        setIsSaved(true);
-        setCurrentNoteId(null);
-    };
+    // const handleDelete = () => {
+    //     // eslint-disable-next-line no-underscore-dangle
+    //     dispatch(deleteNote(note._id));
+    //     dispatch(resetIsSaved());
+    //     setCurrentNoteId(null);
+    // };
 
     return note ? (
         <div className="no-scrollbar w-full overflow-y-auto py-5">
@@ -173,7 +155,11 @@ function Editor({ currentNoteId, setCurrentNoteId, setFilter }) {
                         Save
                     </button>
                 )}
-                <button type="button" className="btn btn-error ml-4" onClick={handleDelete}>
+                <button
+                    type="button"
+                    className="btn btn-error ml-4"
+                    onClick={() => handleDelete(note)}
+                >
                     Delete
                 </button>
             </div>

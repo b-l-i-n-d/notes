@@ -1,0 +1,42 @@
+.ReactTags :global {
+    /* Example Styles for React Tags*/
+    .ReactTags__tags {
+        @apply relative;
+    }
+
+    /* Styles for the input */
+    .ReactTags__tagInput {
+        @apply inline-block;
+    }
+    .ReactTags__tagInput input.ReactTags__tagInputField,
+    .ReactTags__tagInput input.ReactTags__tagInputField:focus {
+        @apply input input-sm bg-base-300;
+    }
+
+    .ReactTags__editTagInput {
+        @apply inline-flex;
+    }
+
+    .ReactTags__editTagInputField {
+        @apply input input-sm bg-base-300;
+    }
+
+    /* Styles for selected tags */
+    .ReactTags__selected input {
+        @apply input-ghost input input-sm bg-base-300;
+    }
+
+    .ReactTags__selected span.ReactTags__tag {
+        @apply btn btn-ghost no-animation btn-sm mx-1 mb-2 bg-base-300;
+    }
+    .ReactTags__selected span.ReactTags__tag:first-child {
+        margin-left: 0px;
+    }
+    .ReactTags__selected span.ReactTags__tag .ReactTags__remove {
+        @apply badge ml-1 hidden cursor-pointer rounded-full p-1 text-base-100;
+    }
+
+    .ReactTags__selected span.ReactTags__tag:hover .ReactTags__remove {
+        @apply inline-flex;
+    }
+}

@@ -6,8 +6,9 @@ export const getNotes = async (req, res) => {
         const notes = await Note.find().sort({
             time_stamp: -1,
         });
-
+        
         res.status(200).json(notes);
+        console.log("Notes Fetched");
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
@@ -21,7 +22,7 @@ export const createNote = async (req, res) => {
         await newNote.save();
 
         res.status(201).json(newNote);
-        console.log("Post Created");
+        console.log("Note Created");
     } catch (error) {
         res.status(409).json({ message: error.message });
     }
@@ -42,6 +43,7 @@ export const updateNote = async (req, res) => {
     );
     
     res.status(200).json(updatedNote);
+    console.log("Note Updated");
 };
 
 export const deleteNote = async (req, res) => {
@@ -54,4 +56,5 @@ export const deleteNote = async (req, res) => {
     await Note.findByIdAndDelete(_id);
 
     res.json({message: 'Notes Deleted'});
+    console.log("Note Deleted");
 }

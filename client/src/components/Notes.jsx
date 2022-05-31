@@ -1,9 +1,22 @@
 import parse from 'html-react-parser';
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCurrentNoteId } from '../actions/currentNoteId';
+import { getNotes } from '../actions/notes';
 
-function Notes({ createNewNote, currentNoteId, setCurrentNoteId, filter, FILTER_MAP }) {
+function Notes({ createNewNote, filter, FILTER_MAP, handleDelete }) {
+    const dispatch = useDispatch();
+
+    const currentNoteId = useSelector((state) => state.currentNoteId);
+    console.log(currentNoteId);
+
+    useEffect(() => {
+        dispatch(getNotes());
+        console.log('Notes fetched');
+    }, [currentNoteId, dispatch]);
+
     const allNotes = useSelector((state) => state.notes);
+
     const currentNote = useSelector((state) =>
         currentNoteId ? state.notes.find((n) => n.id === currentNoteId) : null
     );
@@ -11,15 +24,25 @@ function Notes({ createNewNote, currentNoteId, setCurrentNoteId, filter, FILTER_
     const noteElements = allNotes.filter(FILTER_MAP[filter]).map((note) => (
         <div
             key={note.id}
-            className={`space-y-2 rounded-lg p-3 shadow-md transition-all duration-300 ${
+            className={`group space-y-2 rounded-lg p-3 shadow-md transition-all duration-300 ${
                 currentNote && note.id === currentNote.id
                     ? `bg-primary text-primary-content shadow-primary/50`
                     : ''
             }`}
-            onClick={() => setCurrentNoteId(note.id)}
+            onClick={() => dispatch(setCurrentNoteId(note.id))}
             aria-hidden="true"
         >
-            <div className="text-xs uppercase">{note.modify_date}</div>
+            <div className="flex items-center justify-between">
+                <div className="py-1 text-xs uppercase">{note.modify_date}</div>
+                <div
+                    aria-hidden
+                    className="hidden cursor-pointer hover:text-red-500 group-hover:block"
+                    onClick={(event) => handleDelete(note, event)}
+                >
+                    <i className="fa-solid fa-trash fa-sm" />
+                </div>
+            </div>
+
             <div className="text-lg font-semibold leading-tight line-clamp-2">{note.title}</div>
             <div className="line-clamp-3">{parse(note.body)}</div>
         </div>

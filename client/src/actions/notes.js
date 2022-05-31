@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import * as api from '../api';
 
 export const getNotes = () => async (dispatch) => {

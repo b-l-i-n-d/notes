@@ -1,9 +1,12 @@
+/* eslint-disable no-underscore-dangle */
 import { useNotifications } from '@mantine/notifications';
 import { nanoid } from 'nanoid';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { themeChange } from 'theme-change';
-import { createNote, getNotes } from './actions/notes';
+import { setCurrentNoteId } from './actions/currentNoteId';
+import { createNote, deleteNote, getNotes } from './actions/notes';
+import { resetIsSaved } from './actions/savedStatus';
 import './App.css';
 import Editor from './components/Editor';
 import Notes from './components/Notes';
@@ -11,11 +14,13 @@ import Sidebar from './components/Sidebar';
 import './tailwind.css';
 
 function App() {
-    const [currentNoteId, setCurrentNoteId] = useState(null);
-
     const [filter, setFilter] = useState('All');
 
     const dispatch = useDispatch();
+    const currentNoteId = useSelector((state) => state.currentNoteId);
+    const currentNote = useSelector((state) =>
+        currentNoteId ? state.notes.find((n) => n.id === currentNoteId) : null
+    );
 
     const FILTER_MAP = {
         All: () => true,
@@ -32,10 +37,6 @@ function App() {
         themeChange(false);
     }, []);
 
-    useEffect(() => {
-        dispatch(getNotes());
-    }, [currentNoteId, dispatch]);
-
     const createNewNote = () => {
         const newNote = {
             id: nanoid(),
@@ -49,7 +50,7 @@ function App() {
             title: 'Add your note',
             body: '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis beatae amet exercitationem vel eius quaerat fugiat nihil quae. Repellat, eaque.</p>',
         };
-        setCurrentNoteId(newNote.id);
+        dispatch(setCurrentNoteId(newNote.id));
         dispatch(createNote(newNote));
         const id = notifications.showNotification({
             loading: true,
@@ -70,6 +71,19 @@ function App() {
         }, 1000);
     };
 
+    const handleDelete = (note, event) => {
+        if (currentNote._id === note._id) {
+            dispatch(setCurrentNoteId(null));
+            console.log('Matched', currentNote._id, note._id);
+        }
+        dispatch(deleteNote(note._id));
+        dispatch(resetIsSaved());
+        dispatch(getNotes());
+        if (event) {
+            event.stopPropagation();
+        }
+    };
+
     return (
         <div className="flex h-screen w-full flex-row overflow-hidden">
             <div className="w-[21.4285714%] bg-base-200">
@@ -79,21 +93,16 @@ function App() {
             <div className="flex w-[21.4285714%] bg-base-100">
                 <Notes
                     createNewNote={createNewNote}
-                    currentNoteId={currentNoteId}
-                    setCurrentNoteId={setCurrentNoteId}
                     filter={filter}
                     FILTER_MAP={FILTER_MAP}
+                    handleDelete={handleDelete}
                 />
             </div>
 
             <div className="divider divider-horizontal m-0 w-1" />
 
             <div className="flex w-[57.1428571%] bg-base-100 px-10">
-                <Editor
-                    currentNoteId={currentNoteId}
-                    setCurrentNoteId={setCurrentNoteId}
-                    setFilter={setFilter}
-                />
+                <Editor setFilter={setFilter} handleDelete={handleDelete} />
             </div>
         </div>
     );

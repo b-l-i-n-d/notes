@@ -8,11 +8,9 @@ function Notes({ createNewNote, filter, FILTER_MAP, handleDelete }) {
     const dispatch = useDispatch();
 
     const currentNoteId = useSelector((state) => state.currentNoteId);
-    console.log(currentNoteId);
 
     useEffect(() => {
         dispatch(getNotes());
-        console.log('Notes fetched');
     }, [currentNoteId, dispatch]);
 
     const allNotes = useSelector((state) => state.notes);

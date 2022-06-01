@@ -3,11 +3,12 @@ import { useNotifications } from '@mantine/notifications';
 import { RichTextEditor } from '@mantine/rte';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { WithContext as ReactTags } from 'react-tag-input';
 import TextareaAutosize from 'react-textarea-autosize';
 import { getNotes, updateNote } from '../actions/notes';
 import { needSaving, resetIsSaved } from '../actions/savedStatus';
 import noDataImg from '../assets/images/undraw_no_data_re_kwbl.svg';
-import NoteTags from './NoteTags/NoteTags';
+import NoteTagsStyle from './NoteTags.module.scss';
 
 function Editor({ setFilter, handleDelete }) {
     const currentNoteId = useSelector((state) => state.currentNoteId);
@@ -39,6 +40,32 @@ function Editor({ setFilter, handleDelete }) {
 
     const toggleEditable = () => {
         setIsEditable((prevIsEditable) => !prevIsEditable);
+    };
+
+    const handleTagAddition = (tag) => {
+        dispatch(needSaving());
+        setNoteData((prevNoteData) => ({
+            ...prevNoteData,
+            tags: [...prevNoteData.tags, tag],
+        }));
+    };
+
+    const handleTagDelete = (i) => {
+        dispatch(needSaving());
+        setNoteData((prevNoteData) => ({
+            ...prevNoteData,
+            tags: prevNoteData.tags.filter((tag, index) => index !== i),
+        }));
+    };
+
+    const onTagUpdate = (i, newTag) => {
+        dispatch(needSaving());
+        const updatedTags = noteData.tags.slice();
+        updatedTags.splice(i, 1, newTag);
+        setNoteData((prevNoteData) => ({
+            ...prevNoteData,
+            tags: updatedTags,
+        }));
     };
 
     const updateNoteDataTitle = (event) => {
@@ -97,13 +124,6 @@ function Editor({ setFilter, handleDelete }) {
             );
         }
     };
-
-    // const handleDelete = () => {
-    //     // eslint-disable-next-line no-underscore-dangle
-    //     dispatch(deleteNote(note._id));
-    //     dispatch(resetIsSaved());
-    //     setCurrentNoteId(null);
-    // };
 
     return note ? (
         <div className="no-scrollbar w-full overflow-y-auto py-5">
@@ -201,7 +221,18 @@ function Editor({ setFilter, handleDelete }) {
                     <div className="flex">
                         <div className="w-1/4 opacity-75">Tags:</div>
                         <div className="w-3/4 font-normal">
-                            <NoteTags />
+                            <div className={NoteTagsStyle.ReactTags}>
+                                <ReactTags
+                                    inline
+                                    tags={noteData.tags}
+                                    handleAddition={handleTagAddition}
+                                    handleDelete={handleTagDelete}
+                                    onTagUpdate={onTagUpdate}
+                                    placeholder="+ Add Tags"
+                                    autofocus={false}
+                                    editable
+                                />
+                            </div>
                         </div>
                     </div>
 

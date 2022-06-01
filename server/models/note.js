@@ -13,6 +13,18 @@ const noteSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    tags: [
+        {
+            id: {
+                type: String,
+                required: true,
+            },
+            text: {
+                type: String,
+                required: true
+            }
+        }
+    ],
     created_by: {
         type: String,
         required: true,

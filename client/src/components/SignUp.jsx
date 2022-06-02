@@ -5,10 +5,10 @@ import { GoogleLogin } from 'react-google-login';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { Link } from 'react-router-dom';
-import LogInImage from '../assets/images/undraw_taking_notes_re_bnaf.svg';
+import SignUpImage from '../assets/images/undraw_taking_notes_re_bnaf.svg';
 import Theme from './Theme';
 
-function LogIn() {
+function SignUp() {
     const [passwordShown, setPasswordShown] = useState(false);
 
     const tooglePassword = () => {
@@ -21,10 +21,10 @@ function LogIn() {
         <div className="hero min-h-screen bg-base-200">
             <div className="hero-content mx-4 flex-col rounded-3xl bg-base-100 shadow-xl shadow-primary/20 md:flex-row-reverse">
                 <div className="hidden md:block md:w-1/2">
-                    <img src={LogInImage} alt="LoginImage" />
+                    <img src={SignUpImage} alt="LoginImage" />
                 </div>
-                <div className="p-2 sm:p-8 md:w-1/2 md:p-10">
-                    <div className="text-4xl font-bold">Login</div>
+                <div className="p-2 sm:px-8 md:w-1/2 md:px-10">
+                    <div className="text-4xl font-bold">Signup</div>
                     <div className="mt-2">Take notes. You need it, right?</div>
 
                     <div className="mt-8 flex w-full flex-col">
@@ -33,7 +33,7 @@ function LogIn() {
                             render={() => (
                                 <button type="button" className="btn gap-2">
                                     <FcGoogle />
-                                    Sign in with Google
+                                    Sign up with Google
                                 </button>
                             )}
                         />
@@ -41,7 +41,7 @@ function LogIn() {
                         <div className="relative flex items-center">
                             <div className="divider flex-grow" />
                             <span className="mx-4 flex-shrink text-gray-400">
-                                or Sign in with email
+                                or Sign up with email
                             </span>
                             <div className="divider flex-grow" />
                         </div>
@@ -49,11 +49,21 @@ function LogIn() {
                         <form action="get" onSubmit={handleSubmit}>
                             <div className="form-control">
                                 <label className="label">
+                                    <span className="label-text">Name</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder="Name"
+                                    className="input-bordered input"
+                                />
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
                                     <span className="label-text">Email</span>
                                 </label>
                                 <input
                                     type="email"
-                                    placeholder="email"
+                                    placeholder="mail@website.com"
                                     className="input-bordered input"
                                 />
                             </div>
@@ -75,15 +85,11 @@ function LogIn() {
                                     <input
                                         className="input-bordered input w-full"
                                         id="password"
+                                        placeholder="Min. 8 characters"
                                         type={passwordShown ? 'text' : 'password'}
                                         autoComplete="off"
                                     />
                                 </div>
-                                <label className="label">
-                                    <a href="##" className="link-hover label-text-alt link">
-                                        Forgot password?
-                                    </a>
-                                </label>
                             </div>
                             <div className="form-control mt-6">
                                 <button type="button" className="btn btn-primary">
@@ -93,11 +99,9 @@ function LogIn() {
 
                             <div className="mt-4">
                                 <span className="text-sm">
-                                    Not resistered yet?{' '}
-                                    <Link to="/signup">
-                                        <span className="link-primary link font-bold">
-                                            Create Account
-                                        </span>
+                                    Already have an account?{' '}
+                                    <Link to="/login">
+                                        <span className="link-primary link font-bold">Log in</span>
                                     </Link>
                                 </span>
                             </div>
@@ -112,4 +116,4 @@ function LogIn() {
     );
 }
 
-export default LogIn;
+export default SignUp;

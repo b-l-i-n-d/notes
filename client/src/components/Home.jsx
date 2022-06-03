@@ -3,6 +3,7 @@ import { useNotifications } from '@mantine/notifications';
 import { nanoid } from 'nanoid';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 import { themeChange } from 'theme-change';
 import { setCurrentNoteId } from '../actions/currentNoteId';
 import { createNote, deleteNote, getNotes } from '../actions/notes';
@@ -13,6 +14,7 @@ import Sidebar from './Sidebar';
 
 function Home() {
     const [filter, setFilter] = useState('All');
+    const user = JSON.parse(localStorage.getItem('profile'));
 
     const dispatch = useDispatch();
     const currentNoteId = useSelector((state) => state.currentNoteId);
@@ -81,7 +83,9 @@ function Home() {
             event.stopPropagation();
         }
     };
-    return (
+    return !user ? (
+        <Navigate to="/login" replace />
+    ) : (
         <div className="flex h-screen w-full flex-row overflow-hidden">
             <div className="w-[21.4285714%] bg-base-200">
                 <Sidebar setFilter={setFilter} filter={filter} />

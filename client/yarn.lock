@@ -1639,6 +1639,11 @@
   resolved "https://registry.yarnpkg.com/@react-dnd/shallowequal/-/shallowequal-4.0.2.tgz#d1b4befa423f692fa4abf1c79209702e7d8ae4b4"
   integrity sha512-/RVXdLvJxLg4QKvMoM5WlwNR9ViO9z8B/qPcc+C0Sa/teJY7QG7kJ441DwzOjMYEY7GmU4dj5EcGHIkKZiQZCA==
 
+"@react-oauth/google@^0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@react-oauth/google/-/google-0.2.5.tgz#3c03d63644f136377c52e5bbd957961c6923c4ff"
+  integrity sha512-SB0qtM1wB/IBhdjMC9NrASaP4g4PzGjEh0Nf1GVUiHP70NXX5sgdO065Y1BGDyMKqX/gIJESFpUSgxQQ+KiiyQ==
+
 "@rollup/plugin-babel@^5.2.0":
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-babel/-/plugin-babel-5.3.0.tgz#9cb1c5146ddd6a4968ad96f209c50c62f92f9879"

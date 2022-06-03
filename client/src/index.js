@@ -1,4 +1,5 @@
 import { NotificationsProvider } from '@mantine/notifications';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -18,9 +19,11 @@ ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
             <NotificationsProvider>
-                <BrowserRouter>
-                    <App />
-                </BrowserRouter>
+                <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENTID}>
+                    <BrowserRouter>
+                        <App />
+                    </BrowserRouter>
+                </GoogleOAuthProvider>
             </NotificationsProvider>
         </Provider>
     </React.StrictMode>,

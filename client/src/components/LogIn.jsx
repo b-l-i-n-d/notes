@@ -1,21 +1,51 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import { useGoogleLogin } from '@react-oauth/google';
 import React, { useState } from 'react';
-import { GoogleLogin } from 'react-google-login';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
-import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import * as api from '../api';
 import LogInImage from '../assets/images/undraw_taking_notes_re_bnaf.svg';
 import Theme from './Theme';
 
 function LogIn() {
     const [passwordShown, setPasswordShown] = useState(false);
+    const [logInFormData, setLogInFormData] = useState({ email: '', password: '' });
 
     const tooglePassword = () => {
         setPasswordShown(!passwordShown);
     };
 
-    const handleSubmit = () => {};
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(logInFormData);
+    };
+
+    const handleChange = (e) => {
+        setLogInFormData({ ...logInFormData, [e.target.name]: e.target.value });
+    };
+
+    const googleLogIn = useGoogleLogin({
+        onSuccess: async (res) => {
+            const result = (await api.googleUserInfo(res?.access_token)).data;
+
+            try {
+                dispatch({ type: 'LOGIN', data: { result } });
+                navigate('/', { replace: true });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        onError: (res) => {
+            console.log('[Login Failed] res: ', res);
+        },
+    });
 
     return (
         <div className="hero min-h-screen bg-base-200">
@@ -28,15 +58,10 @@ function LogIn() {
                     <div className="mt-2">Take notes. You need it, right?</div>
 
                     <div className="mt-8 flex w-full flex-col">
-                        <GoogleLogin
-                            buttonText="Sign in with Google"
-                            render={() => (
-                                <button type="button" className="btn gap-2">
-                                    <FcGoogle />
-                                    Sign in with Google
-                                </button>
-                            )}
-                        />
+                        <button type="button" className="btn gap-2" onClick={() => googleLogIn()}>
+                            <FcGoogle />
+                            Sign in with Google
+                        </button>
 
                         <div className="relative flex items-center">
                             <div className="divider flex-grow" />
@@ -46,15 +71,17 @@ function LogIn() {
                             <div className="divider flex-grow" />
                         </div>
 
-                        <form action="get" onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit}>
                             <div className="form-control">
                                 <label className="label">
                                     <span className="label-text">Email</span>
                                 </label>
                                 <input
                                     type="email"
+                                    name="email"
                                     placeholder="email"
                                     className="input-bordered input"
+                                    onChange={handleChange}
                                 />
                             </div>
                             <div className="form-control">
@@ -75,8 +102,10 @@ function LogIn() {
                                     <input
                                         className="input-bordered input w-full"
                                         id="password"
+                                        name="password"
                                         type={passwordShown ? 'text' : 'password'}
                                         autoComplete="off"
+                                        onChange={handleChange}
                                     />
                                 </div>
                                 <label className="label">
@@ -86,7 +115,7 @@ function LogIn() {
                                 </label>
                             </div>
                             <div className="form-control mt-6">
-                                <button type="button" className="btn btn-primary">
+                                <button type="submit" className="btn btn-primary">
                                     Login
                                 </button>
                             </div>

@@ -1,6 +1,9 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React from 'react';
+import React, { useState } from 'react';
+import { FiChevronDown } from 'react-icons/fi';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import FilterBtns from './FilterBtns';
 import Theme from './Theme';
 
@@ -19,10 +22,51 @@ function Sidebar({ setFilter, filter }) {
     //         <span>{name}</span>
     //     </div>
     // ));
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')) || null);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const logout = () => {
+        dispatch({ type: 'LOGOUT' });
+
+        navigate('/login', { replace: true });
+        setUser(null);
+    };
+
     return (
         <div className="flex h-full flex-col justify-between px-4 py-5">
             <div>
-                <div className="relative">
+                {user && (
+                    <div className="rounded-xl bg-base-100 shadow-sm">
+                        <div className="m-0 flex flex-row items-center justify-between overflow-visible p-2">
+                            <div className="inline-flex space-x-3">
+                                <div className="avatar">
+                                    <div className="w-12 rounded-xl">
+                                        <img src={user.result.picture} alt="profile_picture" />
+                                    </div>
+                                </div>
+                                <h2 className="card-title text-lg">{user.result.name}</h2>
+                            </div>
+                            <div>
+                                <div className="dropdown-end dropdown">
+                                    <label tabIndex="0" className="btn btn-ghost btn-xs m-1">
+                                        <FiChevronDown size={20} />
+                                    </label>
+                                    <button
+                                        type="button"
+                                        tabIndex="0"
+                                        className="btn btn-ghost dropdown-content menu w-auto rounded-md bg-base-100 py-2 px-4 shadow-md shadow-primary/70"
+                                        onClick={logout}
+                                    >
+                                        <span>Logout</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+                <div className="relative mt-5">
                     <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                         <svg className="h-5 w-5 text-base-content" viewBox="0 0 24 24" fill="none">
                             <path
@@ -40,7 +84,7 @@ function Sidebar({ setFilter, filter }) {
                         placeholder="Search"
                     />
                 </div>
-                <div className="mt-24">
+                <div className="mt-20">
                     <FilterBtns
                         name="All"
                         icon="fa-solid fa-notes-medical"

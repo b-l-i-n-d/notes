@@ -4,18 +4,32 @@ import React, { useState } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
-import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { signup } from '../actions/auth';
 import SignUpImage from '../assets/images/undraw_taking_notes_re_bnaf.svg';
 import Theme from './Theme';
 
 function SignUp() {
     const [passwordShown, setPasswordShown] = useState(false);
+    const [signUpFormData, setSignUpFormData] = useState({ name: '', email: '', password: '' });
 
     const tooglePassword = () => {
         setPasswordShown(!passwordShown);
     };
 
-    const handleSubmit = () => {};
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        dispatch(signup(signUpFormData, navigate));
+    };
+
+    const handleChange = (e) => {
+        setSignUpFormData({ ...signUpFormData, [e.target.name]: e.target.value });
+    };
 
     return (
         <div className="hero min-h-screen bg-base-200">
@@ -53,8 +67,10 @@ function SignUp() {
                                 </label>
                                 <input
                                     type="text"
+                                    name="name"
                                     placeholder="Name"
                                     className="input-bordered input"
+                                    onChange={handleChange}
                                 />
                             </div>
                             <div className="form-control">
@@ -63,8 +79,10 @@ function SignUp() {
                                 </label>
                                 <input
                                     type="email"
+                                    name="email"
                                     placeholder="mail@website.com"
                                     className="input-bordered input"
+                                    onChange={handleChange}
                                 />
                             </div>
                             <div className="form-control">
@@ -85,15 +103,17 @@ function SignUp() {
                                     <input
                                         className="input-bordered input w-full"
                                         id="password"
+                                        name="password"
                                         placeholder="Min. 8 characters"
                                         type={passwordShown ? 'text' : 'password'}
                                         autoComplete="off"
+                                        onChange={handleChange}
                                     />
                                 </div>
                             </div>
                             <div className="form-control mt-6">
-                                <button type="button" className="btn btn-primary">
-                                    Login
+                                <button type="submit" className="btn btn-primary">
+                                    Signup
                                 </button>
                             </div>
 

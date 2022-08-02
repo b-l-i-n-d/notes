@@ -41,11 +41,21 @@ function Sidebar({ setFilter, filter }) {
                     <div className="rounded-xl bg-base-100 shadow-sm">
                         <div className="m-0 flex flex-row items-center justify-between overflow-visible p-2">
                             <div className="inline-flex space-x-3">
-                                <div className="avatar">
-                                    <div className="w-12 rounded-xl">
-                                        <img src={user.result.picture} alt="profile_picture" />
+                                {user.result.picture ? (
+                                    <div className="avatar">
+                                        <div className="w-12 rounded-xl">
+                                            <img src={user.result.picture} alt="profile_picture" />
+                                        </div>
                                     </div>
-                                </div>
+                                ) : (
+                                    <div className="placeholder avatar">
+                                        <div className="w-12 rounded-xl bg-neutral-focus text-neutral-content">
+                                            <span className="text-3xl">
+                                                {user.result.name.charAt(0)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                )}
                                 <h2 className="card-title text-lg">{user.result.name}</h2>
                             </div>
                             <div>

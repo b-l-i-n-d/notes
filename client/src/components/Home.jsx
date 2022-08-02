@@ -45,7 +45,6 @@ function Home() {
                 hour: '2-digit',
                 minute: '2-digit',
             }),
-            created_by: 'Anonymous',
             folder: filter === 'All' ? 'My Notes' : filter,
             title: 'Add your note',
             body: '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis beatae amet exercitationem vel eius quaerat fugiat nihil quae. Repellat, eaque.</p>',

@@ -1,7 +1,7 @@
 import { ScrollArea } from '@mantine/core';
 import { useNotifications } from '@mantine/notifications';
 import { RichTextEditor } from '@mantine/rte';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { WithContext as ReactTags } from 'react-tag-input';
 import TextareaAutosize from 'react-textarea-autosize';
@@ -211,10 +211,14 @@ function Editor({ setFilter, handleDelete }) {
                         <div className="w-3/4 font-normal">
                             <div className="placeholder avatar mr-2">
                                 <div className="w-8 rounded-full bg-neutral-focus text-neutral-content">
-                                    <span className="text-xs">A</span>
+                                    <span className="text-xs">
+                                        {noteData.created_by &&
+                                            noteData.created_by.name &&
+                                            noteData.created_by.name.charAt(0)}
+                                    </span>
                                 </div>
                             </div>
-                            {`${noteData.created_by}`}
+                            {noteData.created_by && noteData.created_by.name}
                         </div>
                     </div>
 

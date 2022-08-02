@@ -26,7 +26,8 @@ const noteSchema = new mongoose.Schema({
         }
     ],
     created_by: {
-        type: String,
+        type: mongoose.Types.ObjectId,
+        ref: "User",
         required: true,
     },
     folder: {

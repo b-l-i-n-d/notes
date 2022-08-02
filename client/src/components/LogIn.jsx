@@ -1,11 +1,12 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useGoogleLogin } from '@react-oauth/google';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { login } from '../actions/auth';
 import * as api from '../api';
 import LogInImage from '../assets/images/undraw_taking_notes_re_bnaf.svg';
 import Theme from './Theme';
@@ -23,7 +24,7 @@ function LogIn() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(logInFormData);
+        dispatch(login(logInFormData, navigate));
     };
 
     const handleChange = (e) => {
@@ -32,7 +33,10 @@ function LogIn() {
 
     const googleLogIn = useGoogleLogin({
         onSuccess: async (res) => {
-            const result = (await api.googleUserInfo(res?.access_token)).data;
+            const result = {
+                ...(await api.googleUserInfo(res?.access_token)).data,
+                token: res?.access_token,
+            };
 
             try {
                 dispatch({ type: 'LOGIN', data: { result } });
@@ -71,7 +75,7 @@ function LogIn() {
                             <div className="divider flex-grow" />
                         </div>
 
-                        <form onSubmit={handleSubmit}>
+                        <form action="post" onSubmit={handleSubmit}>
                             <div className="form-control">
                                 <label className="label">
                                     <span className="label-text">Email</span>

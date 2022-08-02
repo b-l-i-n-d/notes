@@ -2,7 +2,8 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
 import mongoose from "mongoose";
-import notesRoute from './routes/notes.js';
+import notesRoutes from './routes/notes.js';
+import userRoutes from './routes/users.js';
 
 
 const app = express();
@@ -12,7 +13,8 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit:50
 app.use(cors());
 app.use(express.json());
 
-app.use('/notes', notesRoute);
+app.use('/notes', notesRoutes);
+app.use('/users', userRoutes);
 
 const CONNECTION_URL = "mongodb://127.0.0.1:27017/notes";
 const PORT = process.env.PORT || 5000;

@@ -1,9 +1,9 @@
 /* eslint-disable no-underscore-dangle */
-import { showNotification, updateNotification } from '@mantine/notifications';
 import { nanoid } from 'nanoid';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { themeChange } from 'theme-change';
 import { setCurrentNoteId } from '../actions/currentNoteId';
 import { createNote, deleteNote, getNotes } from '../actions/notes';
@@ -52,44 +52,56 @@ function Home() {
             body: '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis beatae amet exercitationem vel eius quaerat fugiat nihil quae. Repellat, eaque.</p>',
         };
 
-        showNotification({
-            id: 'create-note',
-            loading: true,
-            title: 'Creating note',
-            message: 'My brain is fast, you know. ⚡',
+        toast('Creating note', {
+            className: 'bg-base-200 text-base-content shadow-xl shadow-info/30',
+            bodyClassName: 'bg-base-200',
+            toastId: 'create-note',
+            type: toast.TYPE.INFO,
+            position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
-            disallowClose: true,
+            closeButton: false,
         });
+
         dispatch(createNote(newNote));
         dispatch(setCurrentNoteId(newNote.id));
         dispatch(getNotes());
     }, [filter, dispatch]);
 
     if (!isLoading) {
-        updateNotification({
-            id: 'create-note',
-            color: !error ? 'green' : 'red',
-            title: !error ? 'Note created.' : error,
-            message: !error ? `It's time to edit. ✒️` : 'Sad life 😭',
-            icon: !error ? (
-                <i className="fa-solid fa-check" />
-            ) : (
-                <i className="fa-solid fa-circle-xmark" />
-            ),
-            autoClose: 2000,
-        });
-        updateNotification({
-            id: 'delete-note',
-            color: !error ? 'green' : 'red',
-            title: !error ? 'Note deleted.' : error,
-            message: !error ? `Threw it in the blank space 🗑️` : 'Sad life 😭',
-            icon: !error ? (
-                <i className="fa-solid fa-check" />
-            ) : (
-                <i className="fa-solid fa-circle-xmark" />
-            ),
-            autoClose: 2000,
-        });
+        if (error) {
+            toast.update('create-note', {
+                className: 'bg-base-200 text-base-content shadow-xl shadow-error/30',
+                render: error,
+                isLoading: false,
+                type: toast.TYPE.ERROR,
+                autoClose: 2000,
+                closeButton: null,
+            });
+            toast.update('delete-note', {
+                className: 'bg-base-200 text-base-content shadow-xl shadow-error/30',
+                render: error,
+                isLoading: false,
+                type: toast.TYPE.ERROR,
+                autoClose: 2000,
+                closeButton: null,
+            });
+        } else {
+            toast.update('create-note', {
+                className: 'bg-base-200 text-base-content shadow-xl shadow-success/30',
+                render: 'Note created',
+                isLoading: false,
+                type: toast.TYPE.SUCCESS,
+                autoClose: 2000,
+                closeButton: null,
+            });
+            toast.update('delete-note', {
+                render: 'Note deleted',
+                isLoading: false,
+                type: toast.TYPE.SUCCESS,
+                autoClose: 2000,
+                closeButton: null,
+            });
+        }
     }
 
     const handleDelete = useCallback(
@@ -97,17 +109,17 @@ function Home() {
             if (currentNote && currentNote._id === note._id) {
                 dispatch(setCurrentNoteId(null));
             }
-            showNotification({
-                id: 'delete-note',
-                loading: true,
-                title: 'Deleting note',
-                message: 'My brain is fast, you know. ⚡',
-                style: {
-                    backgroundColor: 'red',
-                },
+
+            toast('Deleting note', {
+                className: 'bg-base-200 text-base-content shadow-xl shadow-info/30',
+                bodyClassName: 'bg-base-200',
+                toastId: 'delete-note',
+                type: toast.TYPE.INFO,
+                position: toast.POSITION.BOTTOM_RIGHT,
                 autoClose: false,
-                disallowClose: true,
+                closeButton: false,
             });
+
             dispatch(deleteNote(note._id));
             dispatch(resetIsSaved());
             dispatch(getNotes());

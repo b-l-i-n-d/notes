@@ -1,9 +1,9 @@
-import { MantineProvider } from '@mantine/core';
-import { NotificationsProvider } from '@mantine/notifications';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 import { applyMiddleware, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import App from './App';
@@ -20,15 +20,12 @@ const root = createRoot(container);
 
 root.render(
     <Provider store={store}>
-        <MantineProvider>
-            <NotificationsProvider limit={3}>
-                <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENTID}>
-                    <BrowserRouter>
-                        <App />
-                    </BrowserRouter>
-                </GoogleOAuthProvider>
-            </NotificationsProvider>
-        </MantineProvider>
+        <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENTID}>
+            <BrowserRouter>
+                <App />
+                <ToastContainer />
+            </BrowserRouter>
+        </GoogleOAuthProvider>
     </Provider>
 );
 

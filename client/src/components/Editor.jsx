@@ -1,12 +1,11 @@
 /* eslint-disable no-underscore-dangle */
-import { ScrollArea } from '@mantine/core';
-import { showNotification, updateNotification } from '@mantine/notifications';
 import { useCallback, useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { WithContext as ReactTags } from 'react-tag-input';
 import TextareaAutosize from 'react-textarea-autosize';
+import { toast } from 'react-toastify';
 import { getNotes, updateNote } from '../actions/notes';
 import { needSaving, resetIsSaved } from '../actions/savedStatus';
 import noDataImg from '../assets/images/undraw_no_data_re_kwbl.svg';
@@ -95,13 +94,15 @@ function Editor({ setFilter, handleDelete }) {
 
     const handleSave = useCallback(() => {
         if (currentNoteId) {
-            showNotification({
-                id: 'update-note',
-                loading: true,
-                title: 'Saving note.',
-                message: 'My brain is fast, you know. ⚡',
+            toast('Saving note', {
+                className: 'bg-base-200 text-base-content shadow-xl shadow-info/30',
+                bodyClassName: 'bg-base-200',
+                toastId: 'update-note',
+                isLoading: true,
+                type: toast.TYPE.INFO,
+                position: toast.POSITION.BOTTOM_RIGHT,
                 autoClose: false,
-                disallowClose: true,
+                closeButton: false,
             });
 
             dispatch(resetIsSaved());
@@ -114,18 +115,25 @@ function Editor({ setFilter, handleDelete }) {
     }, [currentNoteId, dispatch, note, noteData]);
 
     if (!isLoading) {
-        updateNotification({
-            id: 'update-note',
-            color: !error ? 'green' : 'red',
-            title: !error ? 'Note saved.' : error,
-            message: !error ? `It's time to edit. ✒️` : 'Sad life 😭',
-            icon: !error ? (
-                <i className="fa-solid fa-check" />
-            ) : (
-                <i className="fa-solid fa-circle-xmark" />
-            ),
-            autoClose: 2000,
-        });
+        if (error) {
+            toast.update('update-note', {
+                className: 'bg-base-200 text-base-content shadow-xl shadow-success/30',
+                render: error,
+                isLoading: false,
+                type: toast.TYPE.ERROR,
+                autoClose: 2000,
+                closeButton: null,
+            });
+        } else {
+            toast.update('update-note', {
+                className: 'bg-base-200 text-base-content shadow-xl shadow-success/30',
+                render: 'Note saved',
+                isLoading: false,
+                type: toast.TYPE.SUCCESS,
+                autoClose: 2000,
+                closeButton: null,
+            });
+        }
     }
 
     return note ? (
@@ -188,115 +196,109 @@ function Editor({ setFilter, handleDelete }) {
             </div>
 
             <div className="divider divider-vertical" />
-            <ScrollArea className="h-full">
-                <div className="space-y-5">
-                    {isEditable ? (
-                        <TextareaAutosize
-                            autoFocus
-                            className="h-auto w-full bg-base-100 text-4xl font-bold outline-dashed outline-primary"
-                            type="text"
-                            value={noteData.title}
-                            onChange={updateNoteDataTitle}
-                            onBlur={toggleEditable}
-                        />
-                    ) : (
-                        <div
-                            aria-hidden="true"
-                            className="text-4xl font-bold"
-                            onClick={toggleEditable}
-                        >
-                            {noteData.title}
-                        </div>
-                    )}
-
-                    <div className="flex">
-                        <div className="w-1/4 opacity-75">Created By:</div>
-                        <div className="w-3/4 font-normal">
-                            <div className="placeholder avatar mr-2">
-                                <div className="w-8 rounded-full bg-neutral-focus text-neutral-content">
-                                    <span className="text-xs">
-                                        {noteData.created_by &&
-                                            noteData.created_by.name &&
-                                            noteData.created_by.name.charAt(0)}
-                                    </span>
-                                </div>
-                            </div>
-                            {noteData.created_by && noteData.created_by.name}
-                        </div>
-                    </div>
-
-                    <div className="flex">
-                        <div className="w-1/4 opacity-75">Tags:</div>
-                        <div className="w-3/4 font-normal">
-                            <div className={NoteTagsStyle.ReactTags}>
-                                <ReactTags
-                                    inline
-                                    tags={noteData.tags}
-                                    handleAddition={handleTagAddition}
-                                    handleDelete={handleTagDelete}
-                                    onTagUpdate={onTagUpdate}
-                                    placeholder="+ Add Tags"
-                                    autofocus={false}
-                                    editable
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="flex">
-                        <div className="w-1/4 opacity-75">Last Modified:</div>
-                        <div className="w-3/4 font-normal">
-                            {`${noteData.modify_date}, ${noteData.modify_time}`}
-                        </div>
-                    </div>
-                </div>
-                <div className="divider divider-vertical" />
-                <div>
-                    <ReactQuill
-                        theme="snow"
-                        formats={[
-                            'header',
-                            'font',
-                            'size',
-                            'bold',
-                            'italic',
-                            'underline',
-                            'strike',
-                            'blockquote',
-                            'list',
-                            'bullet',
-                            'indent',
-                            'align',
-                            'link',
-                            'image',
-                            'video',
-                        ]}
-                        modules={{
-                            toolbar: [
-                                [{ header: '1' }, { header: '2' }, { font: [] }],
-                                [{ size: [] }],
-                                ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-                                [
-                                    { list: 'ordered' },
-                                    { list: 'bullet' },
-                                    { indent: '-1' },
-                                    { indent: '+1' },
-                                ],
-                                [
-                                    { align: '' },
-                                    { align: 'center' },
-                                    { align: 'right' },
-                                    { align: 'justify' },
-                                ],
-                                ['link', 'image', 'video'],
-                                ['clean'],
-                            ],
-                        }}
-                        value={noteData.body}
-                        onChange={updateNoteDataBody}
+            <div className="space-y-5">
+                {isEditable ? (
+                    <TextareaAutosize
+                        autoFocus
+                        className="h-auto w-full bg-base-100 text-4xl font-bold outline-dashed outline-primary"
+                        type="text"
+                        value={noteData.title}
+                        onChange={updateNoteDataTitle}
+                        onBlur={toggleEditable}
                     />
+                ) : (
+                    <div aria-hidden="true" className="text-4xl font-bold" onClick={toggleEditable}>
+                        {noteData.title}
+                    </div>
+                )}
+
+                <div className="flex">
+                    <div className="w-1/4 opacity-75">Created By:</div>
+                    <div className="w-3/4 font-normal">
+                        <div className="placeholder avatar mr-2">
+                            <div className="w-8 rounded-full bg-neutral-focus text-neutral-content">
+                                <span className="text-xs">
+                                    {noteData.created_by &&
+                                        noteData.created_by.name &&
+                                        noteData.created_by.name.charAt(0)}
+                                </span>
+                            </div>
+                        </div>
+                        {noteData.created_by && noteData.created_by.name}
+                    </div>
                 </div>
-            </ScrollArea>
+
+                <div className="flex">
+                    <div className="w-1/4 opacity-75">Tags:</div>
+                    <div className="w-3/4 font-normal">
+                        <div className={NoteTagsStyle.ReactTags}>
+                            <ReactTags
+                                inline
+                                tags={noteData.tags}
+                                handleAddition={handleTagAddition}
+                                handleDelete={handleTagDelete}
+                                onTagUpdate={onTagUpdate}
+                                placeholder="+ Add Tags"
+                                autofocus={false}
+                                editable
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex">
+                    <div className="w-1/4 opacity-75">Last Modified:</div>
+                    <div className="w-3/4 font-normal">
+                        {`${noteData.modify_date}, ${noteData.modify_time}`}
+                    </div>
+                </div>
+            </div>
+            <div className="divider divider-vertical" />
+            <div>
+                <ReactQuill
+                    theme="snow"
+                    formats={[
+                        'header',
+                        'font',
+                        'size',
+                        'bold',
+                        'italic',
+                        'underline',
+                        'strike',
+                        'blockquote',
+                        'list',
+                        'bullet',
+                        'indent',
+                        'align',
+                        'link',
+                        'image',
+                        'video',
+                    ]}
+                    modules={{
+                        toolbar: [
+                            [{ header: '1' }, { header: '2' }, { font: [] }],
+                            [{ size: [] }],
+                            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                            [
+                                { list: 'ordered' },
+                                { list: 'bullet' },
+                                { indent: '-1' },
+                                { indent: '+1' },
+                            ],
+                            [
+                                { align: '' },
+                                { align: 'center' },
+                                { align: 'right' },
+                                { align: 'justify' },
+                            ],
+                            ['link', 'image', 'video'],
+                            ['clean'],
+                        ],
+                    }}
+                    value={noteData.body}
+                    onChange={updateNoteDataBody}
+                />
+            </div>
         </div>
     ) : (
         <div className="flex h-full flex-col items-center justify-center space-y-3">

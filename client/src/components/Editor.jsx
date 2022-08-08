@@ -253,8 +253,9 @@ function Editor({ setFilter, handleDelete }) {
                 </div>
             </div>
             <div className="divider divider-vertical" />
-            <div>
+            <div data-text-editor="name">
                 <ReactQuill
+                    style={{ fontSize: 16 }}
                     theme="snow"
                     formats={[
                         'header',
@@ -294,6 +295,7 @@ function Editor({ setFilter, handleDelete }) {
                             ['clean'],
                         ],
                     }}
+                    bounds={`[data-text-editor="name"]`}
                     value={noteData.body}
                     onChange={updateNoteDataBody}
                 />

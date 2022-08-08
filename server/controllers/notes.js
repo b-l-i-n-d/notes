@@ -6,7 +6,7 @@ export const getNotes = async (req, res) => {
     try {
         const notes = await Note.find().populate("created_by", "name").sort({
             time_stamp: -1,
-        });
+        }).exec();
         
         res.status(200).json(notes);
     } catch (error) {
@@ -21,7 +21,10 @@ export const getNotesByUser = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(_id)) {
             return res.status(404).send("No user with that ID.");
         }
-        const { notes } = await User.findById(_id).populate("notes").select("notes").exec();
+        const { notes } = await User.findById(_id).populate({ path: "notes", options: {sort: {time_stamp: -1}}, populate: {
+            path: "created_by",
+            select: "name"
+        }}).select("notes").exec();
         res.status(200).json(notes);
     } catch (error) {
         res.status(404).json({ message: error.message });
@@ -82,8 +85,8 @@ export const deleteNote = async (req, res) => {
                 notes: _id
             }
         })
-        res.json({message: 'Notes Deleted'});
+        res.status(200).json({ message: 'Notes Deleted' });
     } catch (error) {
-        res.status(410).send(error.message);
+        res.status(410).json({ message: error.message });
     }
 }

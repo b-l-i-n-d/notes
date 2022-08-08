@@ -5,4 +5,9 @@ import currentNoteId from './currentNoteId';
 import notes from './notes';
 import savedStatus from './savedStatus';
 
-export const reducers = combineReducers({ notes, savedStatus, currentNoteId, auth });
+export const reducers = combineReducers({
+    notes,
+    savedStatus,
+    currentNoteId,
+    auth,
+});

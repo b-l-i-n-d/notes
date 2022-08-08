@@ -13,10 +13,10 @@ function Notes({ createNewNote, filter, FILTER_MAP, handleDelete }) {
         dispatch(getNotes());
     }, [currentNoteId, dispatch]);
 
-    const allNotes = useSelector((state) => state.notes);
+    const { data: allNotes } = useSelector((state) => state.notes);
 
     const currentNote = useSelector((state) =>
-        currentNoteId ? state.notes.find((n) => n.id === currentNoteId) : null
+        currentNoteId ? state.notes.data.find((note) => note.id === currentNoteId) : null
     );
 
     const noteElements = allNotes.filter(FILTER_MAP[filter]).map((note) => (

@@ -1,7 +1,9 @@
+/* eslint-disable no-underscore-dangle */
 import { ScrollArea } from '@mantine/core';
-import { useNotifications } from '@mantine/notifications';
-import { RichTextEditor } from '@mantine/rte';
-import { useEffect, useState } from 'react';
+import { showNotification, updateNotification } from '@mantine/notifications';
+import { useCallback, useEffect, useState } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { WithContext as ReactTags } from 'react-tag-input';
 import TextareaAutosize from 'react-textarea-autosize';
@@ -11,19 +13,16 @@ import noDataImg from '../assets/images/undraw_no_data_re_kwbl.svg';
 import NoteTagsStyle from './NoteTags.module.scss';
 
 function Editor({ setFilter, handleDelete }) {
-    const currentNoteId = useSelector((state) => state.currentNoteId);
-
     const [noteData, setNoteData] = useState('');
-
-    const note = useSelector((state) =>
-        currentNoteId ? state.notes.find((n) => n.id === currentNoteId) : null
-    );
-
-    const isSaved = useSelector((state) => state.savedStatus);
-
     const [isEditable, setIsEditable] = useState(false);
 
-    const notifications = useNotifications();
+    const currentNoteId = useSelector((state) => state.currentNoteId);
+    const note = useSelector((state) =>
+        currentNoteId ? state.notes.data.find((n) => n.id === currentNoteId) : null
+    );
+    const { isLoading, error } = useSelector((state) => state.notes);
+    const isSaved = useSelector((state) => state.savedStatus);
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -70,7 +69,6 @@ function Editor({ setFilter, handleDelete }) {
 
     const updateNoteDataTitle = (event) => {
         dispatch(needSaving());
-
         setNoteData((prevNoteData) => ({
             ...prevNoteData,
             title: event.target.value.replace(/[\r\n]+/gm, ''),
@@ -84,7 +82,6 @@ function Editor({ setFilter, handleDelete }) {
 
     const updateNoteDataBody = (body) => {
         dispatch(needSaving());
-
         setNoteData((prevNoteData) => ({
             ...prevNoteData,
             body,
@@ -96,34 +93,40 @@ function Editor({ setFilter, handleDelete }) {
         }));
     };
 
-    const handleSave = () => {
+    const handleSave = useCallback(() => {
         if (currentNoteId) {
-            dispatch(resetIsSaved());
-            const id = notifications.showNotification({
+            showNotification({
+                id: 'update-note',
                 loading: true,
                 title: 'Saving note.',
                 message: 'My brain is fast, you know. ⚡',
                 autoClose: false,
                 disallowClose: true,
             });
-            setTimeout(() => {
-                notifications.updateNotification(id, {
-                    id,
-                    color: 'green',
-                    title: 'Note saved.',
-                    message: 'Your data is saved in my brain. 🧠',
-                    icon: <i className="fa-solid fa-check" />,
-                    autoClose: 2000,
-                });
-            }, 1000);
+
+            dispatch(resetIsSaved());
             dispatch(
-                // eslint-disable-next-line no-underscore-dangle
                 updateNote(note._id, {
                     ...noteData,
                 })
             );
         }
-    };
+    }, [currentNoteId, dispatch, note, noteData]);
+
+    if (!isLoading) {
+        updateNotification({
+            id: 'update-note',
+            color: !error ? 'green' : 'red',
+            title: !error ? 'Note saved.' : error,
+            message: !error ? `It's time to edit. ✒️` : 'Sad life 😭',
+            icon: !error ? (
+                <i className="fa-solid fa-check" />
+            ) : (
+                <i className="fa-solid fa-circle-xmark" />
+            ),
+            autoClose: 2000,
+        });
+    }
 
     return note ? (
         <div className="no-scrollbar w-full overflow-y-auto py-5">
@@ -249,8 +252,46 @@ function Editor({ setFilter, handleDelete }) {
                 </div>
                 <div className="divider divider-vertical" />
                 <div>
-                    <RichTextEditor
-                        className="bg-base-100 text-base-content"
+                    <ReactQuill
+                        theme="snow"
+                        formats={[
+                            'header',
+                            'font',
+                            'size',
+                            'bold',
+                            'italic',
+                            'underline',
+                            'strike',
+                            'blockquote',
+                            'list',
+                            'bullet',
+                            'indent',
+                            'align',
+                            'link',
+                            'image',
+                            'video',
+                        ]}
+                        modules={{
+                            toolbar: [
+                                [{ header: '1' }, { header: '2' }, { font: [] }],
+                                [{ size: [] }],
+                                ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                                [
+                                    { list: 'ordered' },
+                                    { list: 'bullet' },
+                                    { indent: '-1' },
+                                    { indent: '+1' },
+                                ],
+                                [
+                                    { align: '' },
+                                    { align: 'center' },
+                                    { align: 'right' },
+                                    { align: 'justify' },
+                                ],
+                                ['link', 'image', 'video'],
+                                ['clean'],
+                            ],
+                        }}
                         value={noteData.body}
                         onChange={updateNoteDataBody}
                     />

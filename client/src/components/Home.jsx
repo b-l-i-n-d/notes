@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
-import { useNotifications } from '@mantine/notifications';
+import { showNotification, updateNotification } from '@mantine/notifications';
 import { nanoid } from 'nanoid';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { themeChange } from 'theme-change';
@@ -19,8 +19,10 @@ function Home() {
     const dispatch = useDispatch();
     const currentNoteId = useSelector((state) => state.currentNoteId);
     const currentNote = useSelector((state) =>
-        currentNoteId ? state.notes.find((n) => n.id === currentNoteId) : null
+        currentNoteId ? state.notes.data.find((note) => note.id === currentNoteId) : null
     );
+
+    const { isLoading, error } = useSelector((state) => state.notes);
 
     const FILTER_MAP = {
         All: () => true,
@@ -31,13 +33,13 @@ function Home() {
         'Reading list': (note) => note.folder === 'Reading list',
     };
 
-    const notifications = useNotifications();
+    // const notifications = useNotifications();
 
     useEffect(() => {
         themeChange(false);
     }, []);
 
-    const createNewNote = () => {
+    const createNewNote = useCallback(() => {
         const newNote = {
             id: nanoid(),
             modify_date: new Date().toDateString(),
@@ -49,39 +51,73 @@ function Home() {
             title: 'Add your note',
             body: '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis beatae amet exercitationem vel eius quaerat fugiat nihil quae. Repellat, eaque.</p>',
         };
-        dispatch(setCurrentNoteId(newNote.id));
-        dispatch(createNote(newNote));
-        const id = notifications.showNotification({
+
+        showNotification({
+            id: 'create-note',
             loading: true,
             title: 'Creating note',
             message: 'My brain is fast, you know. ⚡',
             autoClose: false,
             disallowClose: true,
         });
-        setTimeout(() => {
-            notifications.updateNotification(id, {
-                id,
-                color: 'green',
-                title: 'Note created.',
-                message: `It's time to edit. ✒️`,
-                icon: <i className="fa-solid fa-check" />,
-                autoClose: 2000,
-            });
-        }, 1000);
-    };
-
-    const handleDelete = (note, event) => {
-        if (currentNote._id === note._id) {
-            dispatch(setCurrentNoteId(null));
-            console.log('Matched', currentNote._id, note._id);
-        }
-        dispatch(deleteNote(note._id));
-        dispatch(resetIsSaved());
+        dispatch(createNote(newNote));
+        dispatch(setCurrentNoteId(newNote.id));
         dispatch(getNotes());
-        if (event) {
-            event.stopPropagation();
-        }
-    };
+    }, [filter, dispatch]);
+
+    if (!isLoading) {
+        updateNotification({
+            id: 'create-note',
+            color: !error ? 'green' : 'red',
+            title: !error ? 'Note created.' : error,
+            message: !error ? `It's time to edit. ✒️` : 'Sad life 😭',
+            icon: !error ? (
+                <i className="fa-solid fa-check" />
+            ) : (
+                <i className="fa-solid fa-circle-xmark" />
+            ),
+            autoClose: 2000,
+        });
+        updateNotification({
+            id: 'delete-note',
+            color: !error ? 'green' : 'red',
+            title: !error ? 'Note deleted.' : error,
+            message: !error ? `Threw it in the blank space 🗑️` : 'Sad life 😭',
+            icon: !error ? (
+                <i className="fa-solid fa-check" />
+            ) : (
+                <i className="fa-solid fa-circle-xmark" />
+            ),
+            autoClose: 2000,
+        });
+    }
+
+    const handleDelete = useCallback(
+        (note, event) => {
+            if (currentNote && currentNote._id === note._id) {
+                dispatch(setCurrentNoteId(null));
+            }
+            showNotification({
+                id: 'delete-note',
+                loading: true,
+                title: 'Deleting note',
+                message: 'My brain is fast, you know. ⚡',
+                style: {
+                    backgroundColor: 'red',
+                },
+                autoClose: false,
+                disallowClose: true,
+            });
+            dispatch(deleteNote(note._id));
+            dispatch(resetIsSaved());
+            dispatch(getNotes());
+            if (event) {
+                event.stopPropagation();
+            }
+        },
+        [currentNote, dispatch]
+    );
+
     return !user ? (
         <Navigate to="/login" replace />
     ) : (

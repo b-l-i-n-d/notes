@@ -1,3 +1,4 @@
+import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { createRoot } from 'react-dom/client';
@@ -19,13 +20,15 @@ const root = createRoot(container);
 
 root.render(
     <Provider store={store}>
-        <NotificationsProvider>
-            <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENTID}>
-                <BrowserRouter>
-                    <App />
-                </BrowserRouter>
-            </GoogleOAuthProvider>
-        </NotificationsProvider>
+        <MantineProvider>
+            <NotificationsProvider limit={3}>
+                <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENTID}>
+                    <BrowserRouter>
+                        <App />
+                    </BrowserRouter>
+                </GoogleOAuthProvider>
+            </NotificationsProvider>
+        </MantineProvider>
     </Provider>
 );
 

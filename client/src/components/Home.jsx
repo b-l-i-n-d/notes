@@ -54,7 +54,6 @@ function Home() {
 
         toast('Creating note', {
             className: 'bg-base-200 text-base-content shadow-xl shadow-info/30',
-            bodyClassName: 'bg-base-200',
             toastId: 'create-note',
             type: toast.TYPE.INFO,
             position: toast.POSITION.BOTTOM_RIGHT,
@@ -106,19 +105,18 @@ function Home() {
 
     const handleDelete = useCallback(
         (note, event) => {
-            if (currentNote && currentNote._id === note._id) {
-                dispatch(setCurrentNoteId(null));
-            }
-
             toast('Deleting note', {
                 className: 'bg-base-200 text-base-content shadow-xl shadow-info/30',
-                bodyClassName: 'bg-base-200',
                 toastId: 'delete-note',
                 type: toast.TYPE.INFO,
                 position: toast.POSITION.BOTTOM_RIGHT,
                 autoClose: false,
                 closeButton: false,
             });
+
+            if (currentNote && currentNote._id === note._id) {
+                dispatch(setCurrentNoteId(null));
+            }
 
             dispatch(deleteNote(note._id));
             dispatch(resetIsSaved());

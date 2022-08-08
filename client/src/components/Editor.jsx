@@ -96,7 +96,6 @@ function Editor({ setFilter, handleDelete }) {
         if (currentNoteId) {
             toast('Saving note', {
                 className: 'bg-base-200 text-base-content shadow-xl shadow-info/30',
-                bodyClassName: 'bg-base-200',
                 toastId: 'update-note',
                 isLoading: true,
                 type: toast.TYPE.INFO,

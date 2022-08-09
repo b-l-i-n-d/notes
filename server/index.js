@@ -1,5 +1,6 @@
 import bodyParser from "body-parser";
 import cors from "cors";
+import 'dotenv/config';
 import express from "express";
 import mongoose from "mongoose";
 import notesRoutes from './routes/notes.js';
@@ -16,8 +17,8 @@ app.use(express.json());
 app.use('/notes', notesRoutes);
 app.use('/users', userRoutes);
 
-const CONNECTION_URL = "mongodb://127.0.0.1:27017/notes";
-const PORT = process.env.PORT || 5000;
+const CONNECTION_URL = process.env.DB_URL;
+const PORT = process.env.PORT;
 
 mongoose
     .connect(CONNECTION_URL)

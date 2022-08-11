@@ -15,7 +15,7 @@ import Sidebar from './Sidebar';
 function Home() {
     const [filter, setFilter] = useState('All');
     const user = JSON.parse(localStorage.getItem('profile'));
-    const decodedToken = jwtDecode(user.token);
+    const decodedToken = user ? jwtDecode(user.token) : null;
 
     const dispatch = useDispatch();
     const currentNoteId = useSelector((state) => state.currentNoteId);

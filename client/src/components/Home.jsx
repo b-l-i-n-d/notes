@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle */
+import jwtDecode from 'jwt-decode';
 import { nanoid } from 'nanoid';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,6 +15,7 @@ import Sidebar from './Sidebar';
 function Home() {
     const [filter, setFilter] = useState('All');
     const user = JSON.parse(localStorage.getItem('profile'));
+    const decodedToken = jwtDecode(user.token);
 
     const dispatch = useDispatch();
     const currentNoteId = useSelector((state) => state.currentNoteId);
@@ -55,6 +56,7 @@ function Home() {
         toast('Creating note', {
             className: 'bg-base-200 text-base-content shadow-xl shadow-info/30',
             toastId: 'create-note',
+            isLoading: true,
             type: toast.TYPE.INFO,
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
@@ -65,6 +67,32 @@ function Home() {
         dispatch(setCurrentNoteId(newNote.id));
         dispatch(getNotes());
     }, [filter, dispatch]);
+
+    const handleDelete = useCallback(
+        (note, event) => {
+            toast('Deleting note', {
+                className: 'bg-base-200 text-base-content shadow-xl shadow-info/30',
+                toastId: 'delete-note',
+                isLoading: true,
+                type: toast.TYPE.INFO,
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: false,
+                closeButton: false,
+            });
+
+            if (currentNote && currentNote._id === note._id) {
+                dispatch(setCurrentNoteId(null));
+            }
+
+            dispatch(deleteNote(note._id));
+            dispatch(resetIsSaved());
+            dispatch(getNotes());
+            if (event) {
+                event.stopPropagation();
+            }
+        },
+        [currentNote, dispatch]
+    );
 
     if (!isLoading) {
         if (error) {
@@ -103,32 +131,10 @@ function Home() {
         }
     }
 
-    const handleDelete = useCallback(
-        (note, event) => {
-            toast('Deleting note', {
-                className: 'bg-base-200 text-base-content shadow-xl shadow-info/30',
-                toastId: 'delete-note',
-                type: toast.TYPE.INFO,
-                position: toast.POSITION.BOTTOM_RIGHT,
-                autoClose: false,
-                closeButton: false,
-            });
-
-            if (currentNote && currentNote._id === note._id) {
-                dispatch(setCurrentNoteId(null));
-            }
-
-            dispatch(deleteNote(note._id));
-            dispatch(resetIsSaved());
-            dispatch(getNotes());
-            if (event) {
-                event.stopPropagation();
-            }
-        },
-        [currentNote, dispatch]
-    );
-
+    // eslint-disable-next-line no-nested-ternary
     return !user ? (
+        <Navigate to="/login" replace />
+    ) : decodedToken.exp * 1000 < new Date().getTime() ? (
         <Navigate to="/login" replace />
     ) : (
         <div className="flex h-screen w-full flex-row overflow-hidden">

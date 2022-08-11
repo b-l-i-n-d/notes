@@ -66,7 +66,7 @@ function Sidebar({ setFilter, filter }) {
                                     <button
                                         type="button"
                                         tabIndex="0"
-                                        className="btn btn-ghost dropdown-content menu w-auto rounded-md bg-base-100 py-2 px-4 shadow-md shadow-primary/70"
+                                        className="btn dropdown-content menu btn-ghost w-auto rounded-md bg-base-100 py-2 px-4 shadow-md shadow-primary/70"
                                         onClick={logout}
                                     >
                                         <span>Logout</span>

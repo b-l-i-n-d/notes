@@ -4,7 +4,7 @@ import React from 'react';
 
 function Theme() {
     return (
-        <div className="dropdown-top dropdown mt-4 w-full">
+        <div className="dropdown dropdown-top mt-4 w-full">
             <label tabIndex="0" className="btn btn-ghost w-full space-x-2 shadow-md">
                 <i className="fa-solid fa-swatchbook" />
                 <span>Change Theme</span>

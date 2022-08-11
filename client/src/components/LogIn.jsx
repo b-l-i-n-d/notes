@@ -4,8 +4,9 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { login } from '../actions/auth';
 import * as api from '../api';
 import LogInImage from '../assets/images/undraw_taking_notes_re_bnaf.svg';
@@ -15,12 +16,22 @@ function LogIn() {
     const [passwordShown, setPasswordShown] = useState(false);
     const [logInFormData, setLogInFormData] = useState({ email: '', password: '' });
 
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { error } = useSelector((state) => state.auth);
+
+    if (error) {
+        toast.error(error, {
+            className: 'bg-base-200 text-base-content shadow-xl shadow-error/30',
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: 2000,
+            closeButton: null,
+        });
+    }
+
     const tooglePassword = () => {
         setPasswordShown(!passwordShown);
     };
-
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -41,8 +52,8 @@ function LogIn() {
             try {
                 dispatch({ type: 'LOGIN', data: { result } });
                 navigate('/', { replace: true });
-            } catch (error) {
-                console.log(error);
+            } catch (e) {
+                console.log(e);
             }
         },
 
@@ -84,7 +95,7 @@ function LogIn() {
                                     type="email"
                                     name="email"
                                     placeholder="email"
-                                    className="input-bordered input"
+                                    className="input input-bordered"
                                     onChange={handleChange}
                                 />
                             </div>
@@ -104,7 +115,7 @@ function LogIn() {
                                         </button>
                                     </div>
                                     <input
-                                        className="input-bordered input w-full"
+                                        className="input input-bordered w-full"
                                         id="password"
                                         name="password"
                                         type={passwordShown ? 'text' : 'password'}
@@ -113,7 +124,7 @@ function LogIn() {
                                     />
                                 </div>
                                 <label className="label">
-                                    <a href="##" className="link-hover label-text-alt link">
+                                    <a href="##" className="link link-hover label-text-alt">
                                         Forgot password?
                                     </a>
                                 </label>
@@ -128,7 +139,7 @@ function LogIn() {
                                 <span className="text-sm">
                                     Not resistered yet?{' '}
                                     <Link to="/signup">
-                                        <span className="link-primary link font-bold">
+                                        <span className="link link-primary font-bold">
                                             Create Account
                                         </span>
                                     </Link>

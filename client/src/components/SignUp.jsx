@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
+import React, { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { useDispatch } from 'react-redux';
@@ -69,7 +69,7 @@ function SignUp() {
                                     type="text"
                                     name="name"
                                     placeholder="Name"
-                                    className="input-bordered input"
+                                    className="input input-bordered"
                                     onChange={handleChange}
                                 />
                             </div>
@@ -81,7 +81,7 @@ function SignUp() {
                                     type="email"
                                     name="email"
                                     placeholder="mail@website.com"
-                                    className="input-bordered input"
+                                    className="input input-bordered"
                                     onChange={handleChange}
                                 />
                             </div>
@@ -101,7 +101,7 @@ function SignUp() {
                                         </button>
                                     </div>
                                     <input
-                                        className="input-bordered input w-full"
+                                        className="input input-bordered w-full"
                                         id="password"
                                         name="password"
                                         placeholder="Min. 8 characters"
@@ -121,7 +121,7 @@ function SignUp() {
                                 <span className="text-sm">
                                     Already have an account?{' '}
                                     <Link to="/login">
-                                        <span className="link-primary link font-bold">Log in</span>
+                                        <span className="link link-primary font-bold">Log in</span>
                                     </Link>
                                 </span>
                             </div>

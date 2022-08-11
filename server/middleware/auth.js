@@ -1,8 +1,8 @@
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 
 const auth = async (req, res, next) => {
     try {
-        const token = req.headers.authorization.split(" ")[1];
+        const token = req.headers.authorization.split(' ')[1];
         const isCustomAuth = token.length < 500;
 
         let decodedData;
@@ -17,10 +17,10 @@ const auth = async (req, res, next) => {
             req.userId = decodedData?.sub;
         }
 
-        next();
+        return next();
     } catch (error) {
-        res.status(401).json({ message: "Authentication needed."})
+        return res.status(401).json({ message: 'Authentication needed.' });
     }
-}
+};
 
 export default auth;

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const noteSchema = new mongoose.Schema({
     id: {
@@ -21,13 +21,13 @@ const noteSchema = new mongoose.Schema({
             },
             text: {
                 type: String,
-                required: true
-            }
-        }
+                required: true,
+            },
+        },
     ],
     created_by: {
         type: mongoose.Types.ObjectId,
-        ref: "User",
+        ref: 'User',
         required: true,
     },
     folder: {
@@ -44,9 +44,9 @@ const noteSchema = new mongoose.Schema({
     time_stamp: {
         type: Date,
         required: true,
-    }
+    },
 });
 
-const Note = mongoose.model("Note", noteSchema);
+const Note = mongoose.model('Note', noteSchema);
 
 export default Note;

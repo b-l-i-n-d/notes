@@ -10,6 +10,7 @@ export const RESET_ISSAVED = 'RESET_ISSAVED';
 
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
+export const LOGIN_ERROR = 'LOGIN_ERROR';
 
 export const IS_ERROR = 'IS_ERROR';
 

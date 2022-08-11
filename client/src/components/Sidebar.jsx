@@ -48,7 +48,7 @@ function Sidebar({ setFilter, filter }) {
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="placeholder avatar">
+                                    <div className="avatar placeholder">
                                         <div className="w-12 rounded-xl bg-neutral-focus text-neutral-content">
                                             <span className="text-3xl">
                                                 {user.result.name.charAt(0)}

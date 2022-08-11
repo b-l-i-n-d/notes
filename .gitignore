@@ -1,3 +1,6 @@
 notes.code-workspace
 client/.env
 server/.env
+client/prettier.config.js
+client/.gitignore
+client/.eslintrc

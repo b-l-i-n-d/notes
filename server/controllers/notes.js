@@ -4,12 +4,9 @@ import User from '../models/user.js';
 
 export const getNotes = async (req, res) => {
     try {
-        const notes = await Note.find()
-            .populate('created_by', 'name')
-            .sort({
-                time_stamp: -1,
-            })
-            .exec();
+        const notes = await Note.find().populate('created_by', 'name').sort({
+            time_stamp: -1,
+        });
 
         res.status(200).json(notes);
     } catch (error) {
@@ -24,7 +21,7 @@ export const getNotesByUser = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(_id)) {
             return res.status(404).send('No user with that ID.');
         }
-        const { notes } = await User.findById(_id)
+        const { notes, folders } = await User.findById(_id)
             .populate({
                 path: 'notes',
                 options: { sort: { time_stamp: -1 } },
@@ -33,9 +30,9 @@ export const getNotesByUser = async (req, res) => {
                     select: 'name',
                 },
             })
-            .select('notes')
-            .exec();
-        return res.status(200).json(notes);
+            .select('notes folders');
+
+        return res.status(200).json({ notes, folders });
     } catch (error) {
         return res.status(404).json({ message: error.message });
     }

@@ -20,21 +20,18 @@ function Home() {
     const dispatch = useDispatch();
     const currentNoteId = useSelector((state) => state.currentNoteId);
     const currentNote = useSelector((state) =>
-        currentNoteId ? state.notes.data.find((note) => note.id === currentNoteId) : null
+        currentNoteId ? state.notes.data.notes.find((note) => note.id === currentNoteId) : null
     );
 
     const { isLoading, error } = useSelector((state) => state.notes);
+    const folders = useSelector((state) => state.notes.data.folders);
 
     const FILTER_MAP = {
         All: () => true,
-        'My Notes': (note) => note.folder === 'My Notes',
-        'Todo list': (note) => note.folder === 'Todo list',
-        Projects: (note) => note.folder === 'Projects',
-        Journal: (note) => note.folder === 'Journal',
-        'Reading list': (note) => note.folder === 'Reading list',
     };
 
-    // const notifications = useNotifications();
+    // eslint-disable-next-line no-return-assign
+    folders?.map((folder) => (FILTER_MAP[folder.name] = (note) => note.folder === folder.name));
 
     useEffect(() => {
         themeChange(false);
@@ -122,6 +119,7 @@ function Home() {
                 closeButton: null,
             });
             toast.update('delete-note', {
+                className: 'bg-base-200 text-base-content shadow-xl shadow-success/30',
                 render: 'Note deleted',
                 isLoading: false,
                 type: toast.TYPE.SUCCESS,

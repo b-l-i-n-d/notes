@@ -23,6 +23,28 @@ const userSchema = mongoose.Schema({
             ref: 'Note',
         },
     ],
+    folders: {
+        type: [
+            {
+                name: {
+                    type: String,
+                },
+                notes: [
+                    {
+                        type: mongoose.Types.ObjectId,
+                        ref: 'Note',
+                    },
+                ],
+            },
+        ],
+        default: [
+            { name: 'My Notes', notes: [] },
+            { name: 'Todos', notes: [] },
+            { name: 'Projects', notes: [] },
+            { name: 'Journals', notes: [] },
+            { name: 'Reading list', notes: [] },
+        ],
+    },
 });
 
 const User = mongoose.model('User', userSchema);

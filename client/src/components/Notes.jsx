@@ -13,13 +13,13 @@ function Notes({ createNewNote, filter, FILTER_MAP, handleDelete }) {
         dispatch(getNotes());
     }, [currentNoteId, dispatch]);
 
-    const { data: allNotes } = useSelector((state) => state.notes);
+    const notes = useSelector((state) => state.notes.data.notes);
 
     const currentNote = useSelector((state) =>
-        currentNoteId ? state.notes.data.find((note) => note.id === currentNoteId) : null
+        currentNoteId ? state.notes.data.notes.find((note) => note.id === currentNoteId) : null
     );
 
-    const noteElements = allNotes.filter(FILTER_MAP[filter]).map((note) => (
+    const noteElements = notes?.filter(FILTER_MAP[filter]).map((note) => (
         <div
             key={note.id}
             className={`group space-y-2 rounded-lg p-3 shadow-md transition-all duration-300 ${

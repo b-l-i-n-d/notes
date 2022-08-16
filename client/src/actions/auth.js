@@ -10,7 +10,6 @@ export const login = (logInFormData, navigate) => async (dispatch) => {
 
         navigate('/', { replace: true });
     } catch (error) {
-        console.log(error.response.data);
         dispatch({ type: LOGIN_ERROR, payload: error.response.data.message });
     }
 };

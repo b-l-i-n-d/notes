@@ -16,7 +16,7 @@ function Editor({ setFilter, handleDelete }) {
 
     const currentNoteId = useSelector((state) => state.currentNoteId);
     const note = useSelector((state) =>
-        currentNoteId ? state.notes.data.find((n) => n.id === currentNoteId) : null
+        currentNoteId ? state.notes.data.notes.find((n) => n.id === currentNoteId) : null
     );
     const { isLoading, error } = useSelector((state) => state.notes);
     const isSaved = useSelector((state) => state.savedStatus);
@@ -115,7 +115,7 @@ function Editor({ setFilter, handleDelete }) {
     if (!isLoading) {
         if (error) {
             toast.update('update-note', {
-                className: 'bg-base-200 text-base-content shadow-xl shadow-success/30',
+                className: 'bg-base-200 text-base-content shadow-xl shadow-error/30',
                 render: error,
                 isLoading: false,
                 type: toast.TYPE.ERROR,
@@ -135,8 +135,8 @@ function Editor({ setFilter, handleDelete }) {
     }
 
     return note ? (
-        <div className="no-scrollbar w-full overflow-y-auto py-5">
-            <div className="flex items-center">
+        <div className="no-scrollbar w-full overflow-y-auto pb-5">
+            <div className="sticky top-0 z-10 flex items-center bg-base-100 pt-5 pb-1">
                 <div className="no-scrollbar breadcrumbs flex-1 py-3 text-lg font-semibold">
                     <ul>
                         <li>
@@ -193,7 +193,7 @@ function Editor({ setFilter, handleDelete }) {
                 </button>
             </div>
 
-            <div className="divider divider-vertical" />
+            <div className="divider divider-vertical mt-2" />
             <div className="space-y-5">
                 {isEditable ? (
                     <TextareaAutosize

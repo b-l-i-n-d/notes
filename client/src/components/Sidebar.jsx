@@ -2,30 +2,28 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import { FiChevronDown } from 'react-icons/fi';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import FilterBtns from './FilterBtns';
 import Theme from './Theme';
 
 function Sidebar({ setFilter, filter }) {
-    // const FILTER_NAMES = Object.keys(FILTER_MAP);
-
-    // const filterBtns = FILTER_NAMES.map((name) => (
-    //     <div
-    //         key={name}
-    //         type="button"
-    //         aria-hidden="true"
-    //         className="btn btn-ghost mb-5 flex w-full justify-start space-x-5 opacity-75 hover:bg-base-300 hover:opacity-100 active:bg-base-300 active:font-bold"
-    //         onClick={() => setFilter(name)}
-    //     >
-    //         <i className="fa-regular fa-note-sticky" />
-    //         <span>{name}</span>
-    //     </div>
-    // ));
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')) || null);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const folders = useSelector((state) => state.notes.data.folders);
+
+    const folderElememts = folders?.map((folder) => (
+        <FilterBtns
+            key={folder._id}
+            name={folder.name}
+            icon="fa-solid fa-notes-medical"
+            setFilter={setFilter}
+            filter={filter}
+        />
+    ));
 
     const logout = () => {
         dispatch({ type: 'LOGOUT' });
@@ -101,36 +99,7 @@ function Sidebar({ setFilter, filter }) {
                         setFilter={setFilter}
                         filter={filter}
                     />
-                    <FilterBtns
-                        name="My Notes"
-                        icon="fa-regular fa-note-sticky"
-                        setFilter={setFilter}
-                        filter={filter}
-                    />
-                    <FilterBtns
-                        name="Todo list"
-                        icon="fa-solid fa-list-check"
-                        setFilter={setFilter}
-                        filter={filter}
-                    />
-                    <FilterBtns
-                        name="Projects"
-                        icon="fa-solid fa-diagram-project"
-                        setFilter={setFilter}
-                        filter={filter}
-                    />
-                    <FilterBtns
-                        name="Journal"
-                        icon="fa-solid fa-book"
-                        setFilter={setFilter}
-                        filter={filter}
-                    />
-                    <FilterBtns
-                        name="Reading list"
-                        icon="fa-solid fa-book-open"
-                        setFilter={setFilter}
-                        filter={filter}
-                    />
+                    {folderElememts}
                 </div>
             </div>
             <Theme />

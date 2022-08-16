@@ -3118,9 +3118,18 @@ html {
   position: relative;
 }
 
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+}
+
 .inset-y-0 {
   top: 0px;
   bottom: 0px;
+}
+
+.top-0 {
+  top: 0px;
 }
 
 .right-0 {
@@ -3129,6 +3138,10 @@ html {
 
 .left-0 {
   left: 0px;
+}
+
+.z-10 {
+  z-index: 10;
 }
 
 .m-0 {
@@ -3152,12 +3165,12 @@ html {
   margin-left: 1rem;
 }
 
-.mb-3 {
-  margin-bottom: 0.75rem;
-}
-
 .mt-2 {
   margin-top: 0.5rem;
+}
+
+.mb-3 {
+  margin-bottom: 0.75rem;
 }
 
 .mt-8 {
@@ -3437,11 +3450,6 @@ html {
   padding: 1rem;
 }
 
-.py-5 {
-  padding-top: 1.25rem;
-  padding-bottom: 1.25rem;
-}
-
 .py-3 {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
@@ -3472,6 +3480,11 @@ html {
   padding-right: 1rem;
 }
 
+.py-5 {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
 .px-1 {
   padding-left: 0.25rem;
   padding-right: 0.25rem;
@@ -3484,6 +3497,14 @@ html {
 
 .pb-5 {
   padding-bottom: 1.25rem;
+}
+
+.pt-5 {
+  padding-top: 1.25rem;
+}
+
+.pb-1 {
+  padding-bottom: 0.25rem;
 }
 
 .pb-28 {
@@ -3612,13 +3633,13 @@ html {
   --tw-shadow: var(--tw-shadow-colored);
 }
 
-.shadow-success\/30 {
-  --tw-shadow-color: hsl(var(--su) / 0.3);
+.shadow-error\/30 {
+  --tw-shadow-color: hsl(var(--er) / 0.3);
   --tw-shadow: var(--tw-shadow-colored);
 }
 
-.shadow-error\/30 {
-  --tw-shadow-color: hsl(var(--er) / 0.3);
+.shadow-success\/30 {
+  --tw-shadow-color: hsl(var(--su) / 0.3);
   --tw-shadow: var(--tw-shadow-colored);
 }
 

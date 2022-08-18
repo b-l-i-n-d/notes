@@ -1,11 +1,10 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { GoogleLogin } from '@react-oauth/google';
 import React, { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { FcGoogle } from 'react-icons/fc';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { signup } from '../actions/auth';
 import SignUpImage from '../assets/images/undraw_taking_notes_re_bnaf.svg';
 import Theme from './Theme';
@@ -20,6 +19,34 @@ function SignUp() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { error } = useSelector((state) => state.auth);
+
+    if (error) {
+        if (error?.name) {
+            toast.error(error.name, {
+                className: 'bg-base-200 text-base-content shadow-xl shadow-error/30',
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 2000,
+                closeButton: null,
+            });
+        }
+        if (error?.email) {
+            toast.error(error.email, {
+                className: 'bg-base-200 text-base-content shadow-xl shadow-error/30',
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 2000,
+                closeButton: null,
+            });
+        }
+        if (error?.password) {
+            toast.error(error.password, {
+                className: 'bg-base-200 text-base-content shadow-xl shadow-error/30',
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 2000,
+                closeButton: null,
+            });
+        }
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -42,7 +69,7 @@ function SignUp() {
                     <div className="mt-2">Take notes. You need it, right?</div>
 
                     <div className="mt-8 flex w-full flex-col">
-                        <GoogleLogin
+                        {/* <GoogleLogin
                             buttonText="Sign in with Google"
                             render={() => (
                                 <button type="button" className="btn gap-2">
@@ -50,12 +77,12 @@ function SignUp() {
                                     Sign up with Google
                                 </button>
                             )}
-                        />
+                        /> */}
 
                         <div className="relative flex items-center">
                             <div className="divider flex-grow" />
                             <span className="mx-4 flex-shrink text-gray-400">
-                                or Sign up with email
+                                Sign up with email
                             </span>
                             <div className="divider flex-grow" />
                         </div>

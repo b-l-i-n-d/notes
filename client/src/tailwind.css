@@ -3744,15 +3744,6 @@ html {
   opacity: 1;
 }
 
-.active\:bg-base-300:active {
-  --tw-bg-opacity: 1;
-  background-color: hsl(var(--b3, var(--b2)) / var(--tw-bg-opacity));
-}
-
-.active\:font-bold:active {
-  font-weight: 700;
-}
-
 .group:hover .group-hover\:block {
   display: block;
 }

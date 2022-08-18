@@ -96,8 +96,15 @@ function SignUp() {
                                     type="text"
                                     name="name"
                                     placeholder="Name"
+                                    pattern="^[a-zA-Z0-9]{3,}"
                                     className="input input-bordered"
                                     onChange={handleChange}
+                                    required
+                                    onInvalid={(event) =>
+                                        event.target.setCustomValidity(
+                                            'Must be at least 3 chars long'
+                                        )
+                                    }
                                 />
                             </div>
                             <div className="form-control">
@@ -110,6 +117,7 @@ function SignUp() {
                                     placeholder="mail@website.com"
                                     className="input input-bordered"
                                     onChange={handleChange}
+                                    required
                                 />
                             </div>
                             <div className="form-control">
@@ -131,10 +139,17 @@ function SignUp() {
                                         className="input input-bordered w-full"
                                         id="password"
                                         name="password"
-                                        placeholder="Min. 8 characters"
+                                        pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$"
+                                        placeholder="Min. 6 chars long"
                                         type={passwordShown ? 'text' : 'password'}
                                         autoComplete="off"
                                         onChange={handleChange}
+                                        onInvalid={(event) =>
+                                            event.target.setCustomValidity(
+                                                'Password should be combination of one uppercase , one lower case, one special char.'
+                                            )
+                                        }
+                                        required
                                     />
                                 </div>
                             </div>

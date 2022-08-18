@@ -6,7 +6,7 @@ export const userValidationRules = () => [
     body('password')
         .isLength({ min: 6 })
         .withMessage('Password must be at least 6 chars long.')
-        .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$/, 'i')
+        .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/gm)
         .withMessage(
             'Password should be combination of one uppercase , one lower case, one special char.'
         ),

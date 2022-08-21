@@ -16,13 +16,31 @@ function Sidebar({ setFilter, filter }) {
     const folders = useSelector((state) => state.notes.data.folders);
 
     const folderElememts = folders?.map((folder) => (
-        <FilterBtns
-            key={folder._id}
-            name={folder.name}
-            icon="fa-solid fa-notes-medical"
-            setFilter={setFilter}
-            filter={filter}
-        />
+        <>
+            <FilterBtns
+                key={folder._id}
+                name={folder.name}
+                icon="fa-solid fa-notes-medical"
+                setFilter={setFilter}
+                filter={filter}
+            />
+            <div className="modal" id={folder.name}>
+                <div className="modal-box">
+                    <h3 className="pb-4 text-lg font-bold">Edit folder name</h3>
+                    <input
+                        type="text"
+                        placeholder="Type here"
+                        className="input input-bordered w-full"
+                        value={folder.name}
+                    />
+                    <div className="modal-action">
+                        <a href="##" className="btn">
+                            Close
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </>
     ));
 
     const logout = () => {
@@ -93,12 +111,17 @@ function Sidebar({ setFilter, filter }) {
                     />
                 </div>
                 <div className="mt-20">
-                    <FilterBtns
-                        name="All"
-                        icon="fa-solid fa-notes-medical"
-                        setFilter={setFilter}
-                        filter={filter}
-                    />
+                    <div
+                        type="button"
+                        aria-hidden="true"
+                        className={`btn btn-ghost mb-3 flex w-full justify-start space-x-5 opacity-75 hover:bg-base-300 hover:opacity-100 ${
+                            filter === 'All' && `bg-base-300 font-semibold opacity-100`
+                        }`}
+                        onClick={() => setFilter('All')}
+                    >
+                        <i className="fa-solid fa-notes-medical" />
+                        <span>All</span>
+                    </div>
                     {folderElememts}
                 </div>
             </div>
